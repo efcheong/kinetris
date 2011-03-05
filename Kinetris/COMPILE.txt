@@ -1,0 +1,132 @@
+                            HOW TO COMPILE KINETRIS                             
+
+
+________________________________________________________________________________
+
+
+WINDOWS
+MICROSOFT VISUAL STUDIO 2008
+
+
+1. Install OpenNI
+
+Download OpenNI 1.0.0.25 Unstable from
+<http://conanchen.com/Kinetris/download/Windows/OpenNI>. Unpack the archive, and
+run "OpenNI-Bin-Win32-v1.0.0.25.exe" to install.
+
+(I chose to install to "C:\SDK\OpenNI\1.0.0\".)
+
+(Alternatively, download OpenNI 1.0.0.25 Unstable from <http://openni.org/>.)
+
+
+2. Install NITE
+
+Download PrimeSense NITE 1.3.0.18 Unstable from
+<http://conanchen.com/Kinetris/download/Windows/NITE>. Unpack the archive, and
+run "Nite-Bin-Win32-v1.3.0.18.exe" to install. When asked for a license key, use
+the key found in "KEY.txt" (this is the free key provided by PrimeSense at
+<http://openni.org/>).
+
+(I chose to install to "C:\SDK\NITE\1.0.0\".)
+
+(Alternatively, download PrimeSense NITE 1.3.0.18 Unstable from
+<http://openni.org/>.)
+
+
+3. Install SensorKinect
+
+Download SensorKinect 0.4 from
+<http://conanchen.com/Kinetris/download/Windows/SensorKinect>. Unpack the
+archive, and run "SensorKinect-Win32-5.0.0.exe" to install.
+
+(I chose to install to the default location.)
+
+(Alternatively, download SensorKinect 0.4 from
+<https://github.com/avin2/SensorKinect/>.)
+
+
+4. Configure OpenNI and NITE
+
+Open the folder that SensorKinect was installed to. Go to the
+"SampleXMLs\OpenNI" folder, and copy the "Data" folder to the folder that OpenNI
+was installed to, replacing the existing files.
+
+Open the folder that SensorKinect was installed to. Go to the
+"SampleXMLs\NITE" folder, and copy the "Data" folder to the folder that NITE was
+installed to, replacing the existing files.
+
+
+5. Install Qt
+
+Download Qt Libraries 4.7.1 from
+<http://get.qt.nokia.com/qt/source/qt-win-opensource-4.7.1-vs2008.exe>. Run
+"qt-win-opensource-4.7.1-vs2008.exe" to install.
+
+Note: To avoid complications, do not install to a location with spaces (e.g.: do
+not install to "C:\Program Files\Qt").
+
+(I chose to install to "C:\SDK\Qt\4.7.1\".)
+
+(Alternatively, download the LGPL version of Qt Libraries 4.7.1 for Windows
+(VS 2008) from <http://qt.nokia.com/>.)
+
+
+6. Configure system "Path" environment variable
+
+Open the Start menu, and go to "Control Panel\System and Security\System". Go to
+"Advanced system settings" in the tasks pane on the left. Go to the "Advanced"
+tab, and click on "Environment Variables...". In the "System variables" list,
+select "Path", and click on "Edit...".
+
+Edit the "Variable value" field to add ";C:\SDK\Qt\4.7.1\bin" to the end (if you
+installed Qt to a different location than I did, instead add ";", followed by
+the location that Qt was installed to, followed by "\bin").
+
+Click on "OK" for each window.
+
+
+7. Confirm/correct paths in project file for Visual Studio
+
+If you installed Qt, OpenNI, or NITE to a different location than I did, you
+will need to correct the paths in the project file for Visual Studio.
+
+Open "KinectBlocks.vcproj" in Visual Studio.
+
+In the "Solution Explorer" panel, right-click on the "KinectBlocks" project, and
+go to "Properties". Under "Configuration Properties" on the left, select
+"NMake". Under "IntelliSense" on the right, edit the "Include Search Path" field
+to correct the locations of Qt, OpenNI, NITE (ensure that each path ends
+with "\include").
+
+Click on "OK".
+
+
+8. Confirm/correct paths in project file for Qt
+
+If you installed Qt, OpenNI, or NITE to a different location than I did, you
+will need to correct the paths in the project file for Qt.
+
+Open "KinectBlocks.pro" in Visual Studio.
+
+Find the "INCLUDEPATH" qmake variable, and edit the value of the variable to
+correct the locations of OpenNI and NITE (ensure that each path ends with
+"/Include", and be careful to use "/" instead of "\").
+
+Find the "LIBS" qmake variable, and edit the value of the variable to correct
+the locations of OpenNI and NITE (ensure that each path ends with "/Lib", and
+be careful to use "/" instead of "\").
+
+Save the file.
+
+
+9. Compile
+
+You should now be able to compile the project. Go to the "Debug" menu and select
+"Start Debugging", or go to the "Build" menu and select "Build Solution". Expect
+to see a lot of warnings--this is normal. If there are errors, however, they are
+most likely because some of the paths were not entered correctly in the previous
+steps.
+
+________________________________________________________________________________
+
+
