@@ -1,0 +1,127 @@
+                            HOW TO INSTALL KINETRIS                             
+
+
+________________________________________________________________________________
+
+
+REQUIREMENTS
+
+
+You must have the standalone model of the Kinect, not the model that comes
+bundled with the Xbox 360 S. The Xbox 360 S model uses a proprietary connector
+that can't be connected to a PC.
+
+________________________________________________________________________________
+
+
+WINDOWS
+
+
+1. Install OpenNI
+
+Download OpenNI 1.0.0.25 Unstable from
+<http://conanchen.com/Kinetris/download/Windows/OpenNI>. Unpack the archive, and
+run "OpenNI-Bin-Win32-v1.0.0.25.exe" to install.
+
+(Alternatively, download OpenNI 1.0.0.25 Unstable from <http://openni.org/>.)
+
+
+2. Install NITE
+
+Download PrimeSense NITE 1.3.0.18 Unstable from
+<http://conanchen.com/Kinetris/download/Windows/NITE>. Unpack the archive, and
+run "Nite-Bin-Win32-v1.3.0.18.exe" to install. When asked for a license key, use
+the key found in "KEY.txt" (this is the free key provided by PrimeSense at
+<http://openni.org/>).
+
+(Alternatively, download PrimeSense NITE 1.3.0.18 Unstable from
+<http://openni.org/>.)
+
+
+3. Install SensorKinect
+
+Download SensorKinect 0.4 from
+<http://conanchen.com/Kinetris/download/Windows/SensorKinect>. Unpack the
+archive, and run "SensorKinect-Win32-5.0.0.exe" to install.
+
+(Alternatively, download SensorKinect 0.4 from
+<http://github.com/avin2/SensorKinect/>.)
+
+
+4. Configure OpenNI and NITE
+
+Open the folder that SensorKinect was installed to. Go to the
+"SampleXMLs\OpenNI" folder, and copy the "Data" folder to the folder that OpenNI
+was installed to, replacing the existing files.
+
+Open the folder that SensorKinect was installed to. Go to the
+"SampleXMLs\NITE" folder, and copy the "Data" folder to the folder that NITE was
+installed to, replacing the existing files.
+
+
+5. Test the Kinect
+
+Plug in the Kinect.
+
+Open the Start menu, and try the NITE samples found in
+"All Programs\Prime Sense\NITE\Samples", to ensure that everything was installed
+and configured correctly. If a console window opens and then closes immediately,
+it means there was an error, most likely because the "Data" folders in the
+previous step were not copied correctly.
+
+
+6. Install Microsoft Visual C++ Redistributable
+
+Download Microsoft Visual C++ 2008 SP1 Redistributable Package (x86) from
+<http://conanchen.com/Kinetris/download/Windows/VC32>, and run
+"vcredist_x86.exe" to install.
+
+(Alternatively, download
+Microsoft Visual C++ 2008 SP1 Redistributable Package (x86) from
+<http://microsoft.com/>.)
+
+
+7. Install Kinetris
+
+Download Kinetris 1.0.0 Beta 1 from
+<http://conanchen.com/Kinetris/download/Windows>. Unpack the archive to a folder
+of your choice.
+
+
+8. Play!
+
+Run "Kinetris.exe" to play the game.
+
+Slide your hand left and right to move the current tetromino. Swipe your hand up
+to hold the current tetromino for later. Swipe your hand down to drop the
+current tetromino. To rotate, first pull your hand back and make a circle, then
+continue making circles to rotate the current tetromino. The game will pause if
+you hide your hand from view (or if the Kinect loses track of it).
+
+________________________________________________________________________________
+
+
+MAC
+
+
+There are no Mac or Linux versions of Kinetris available at this time. However,
+since Kinetris was created using the cross-platform Qt framework, and since
+there are Mac and Linux versions of OpenNI and NITE available, it should be
+possible to compile the game from source for Mac or Linux yourself, if you are
+so inclined. If you end up with a working binary, please let me know!
+
+________________________________________________________________________________
+
+
+LINUX
+
+
+There are no Mac or Linux versions of Kinetris available at this time. However,
+since Kinetris was created using the cross-platform Qt framework, and since
+there are Mac and Linux versions of OpenNI and NITE available, it should be
+possible to compile the game from source for Mac or Linux yourself, if you are
+so inclined. If you end up with a working binary, please let me know!
+
+________________________________________________________________________________
+
+
