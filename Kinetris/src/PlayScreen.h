@@ -46,6 +46,9 @@ public:
 
 protected:
 
+	static const qreal _BACKGROUND_W; // px
+	static const qreal _BACKGROUND_H; // px
+
 	QGraphicsWidget* _sprite;
 
 	QGraphicsWidget* _matrix;

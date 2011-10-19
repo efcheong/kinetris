@@ -18,62 +18,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOADERTHREAD_H
-#define LOADERTHREAD_H
+#ifndef QUITSCREEN_H
+#define QUITSCREEN_H
 
 #include <QtGui/QtGui>
 
-class LoaderThread : public QThread
-{
-signals:
+class Game;
 
-	//
+class QuitScreen : public QObject
+{
+	Q_OBJECT
 
 public:
 
-	enum State
-	{
-		STATE_NONE = 0,
-		STATE_LOAD,
-		STATE_QUIT
-	};
+	QuitScreen(Game* parent);
+	virtual ~QuitScreen();
 
-	virtual ~LoaderThread();
+	QGraphicsWidget* getSprite() const;
 
-	static LoaderThread* instance(QObject* parent);
-	static LoaderThread* instance();
+	void show();
+	void hide();
 
-	State getState() const;
-
-	QPixmap getCachedPixmap(const QString& uri) const;
+	void update(qreal dt);
 
 protected:
 
-	static const qreal UPDATE_INTERVAL;
+	static const qreal _BACKGROUND_W; // px
+	static const qreal _BACKGROUND_H; // px
 
-	State _state;
-	State _s1;
-	mutable QMutex _stateMutex;
-
-	mutable QMutex _cacheMutex;
-
-	LoaderThread(QObject* parent);
+	QGraphicsWidget* _sprite;
 
 	void init();
-	void initState();
-	
-	void setState(State state);
-
-	void run();
-
-	void update();
-
-	void onStateEnter(State state);
-	void onStateLeave(State state);
-
-private:
-
-	static LoaderThread* _instance;
+	void initSprite();
 };
 
-#endif // LOADERTHREAD_H
+#endif // QUITSCREEN_H

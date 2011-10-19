@@ -23,13 +23,14 @@
 
 #include <QtGui/QtGui>
 
-class KinectBlocks;
+class Kinetris;
 class SensorThread;
 class LoaderThread;
 class Background;
 class HomeScreen;
 class PlayScreen;
 class MenuScreen;
+class QuitScreen;
 class Player;
 class InputManager;
 class VisualMatrix;
@@ -46,15 +47,15 @@ public:
 		STATE_INIT,
 		STATE_HOME,
 		STATE_PLAY,
-		STATE_MENU
+		STATE_MENU,
+		STATE_QUIT
 	};
 
+	Game(Kinetris* parent);
 	virtual ~Game();
 
-	static Game* instance(KinectBlocks* parent);
-	static Game* instance();
-
 	State getState() const;
+	void setState(State state);
 
 	void update(qreal dt);
 
@@ -71,18 +72,15 @@ protected:
 	SensorThread* _sensorThread;
 	LoaderThread* _loaderThread;
 
-	QGraphicsScene* _scene;
-
 	Background* _background;
 	HomeScreen* _homeScreen;
 	PlayScreen* _playScreen;
 	MenuScreen* _menuScreen;
+	QuitScreen* _quitScreen;
 
 	Player* _player;
 	InputManager* _inputManager;
 	VisualMatrix* _matrix;
-
-	Game(KinectBlocks* parent);
 
 	void init();
 	void initSensor();
@@ -95,8 +93,6 @@ protected:
 	void initEffect();
 	void initPlayer();
 	void initMatrix();
-
-	void setState(State state);
 
 	void onStateEnter(State state);
 	void onStateLeave(State state);
@@ -123,7 +119,8 @@ protected slots:
 	void onFocusLose();
 	void onFocusSwap();
 
-	void onSteady();
+	void onSteadyBegin();
+	void onSteadyEnd();
 	void onCircle(int direction);
 	void onSlideX(qreal direction);
 	void onSlideY(qreal direction);
@@ -133,13 +130,12 @@ protected slots:
 	void onPush(qreal speed, qreal angle);
 	void onWave();
 
-	void onUsersMap(QImage image);
+	void onUsersMap(QPixmap pixmap);
 
 	void onLevel(int count);
 
-private:
-
-	static Game* _instance;
+	void onPlay();
+	void onQuit(bool force);
 };
 
 #endif // GAME_H

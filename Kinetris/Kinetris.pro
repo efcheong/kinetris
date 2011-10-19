@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-TARGET = "KinectBlocks"
+TARGET = "Kinetris"
 
 CONFIG(debug, debug|release) {
 	DESTDIR = "bin/debug"
@@ -25,13 +25,13 @@ QT += core \
 
 # Windows
 win32 {
-	INCLUDEPATH += "C:/SDK/OpenNI/1.0.0/Include" \
-		"C:/SDK/NITE/1.3.0/Include"
+	INCLUDEPATH += "C:/SDK/OpenNI/1.3/Include" \
+		"C:/SDK/NITE/1.4/Include"
 
-	LIBS += -L"C:/SDK/OpenNI/1.0.0/Lib" \
+	LIBS += -L"C:/SDK/OpenNI/1.3/Lib" \
 		-l"openNI" \
-		-L"C:/SDK/NITE/1.3.0/Lib" \
-		-l"XnVNITE"
+		-L"C:/SDK/NITE/1.4/Lib" \
+		-l"XnVNITE_1_4_1"
 }
 # Mac
 macx {
@@ -41,7 +41,7 @@ macx {
 	LIBS += -L"/usr/lib" \
 		-l"openNI" \
 		-L"/usr/lib" \
-		-l"XnVNITE"
+		-l"XnVNITE_1_4_1"
 }
 # Linux
 unix:!macx {
@@ -51,7 +51,7 @@ unix:!macx {
 	LIBS += -L"/usr/lib" \
 		-l"openNI" \
 		-L"/usr/lib" \
-		-l"XnVNITE"
+		-l"XnVNITE_1_4_1"
 }
 
 HEADERS += "src/Pair.h" \
@@ -61,6 +61,7 @@ HEADERS += "src/Pair.h" \
 	"src/VisualMatrix.h" \
 	"src/Player.h" \
 	"src/InputManager.h" \
+	"src/QuitScreen.h" \
 	"src/MenuScreen.h" \
 	"src/PlayScreen.h" \
 	"src/HomeScreen.h" \
@@ -68,7 +69,7 @@ HEADERS += "src/Pair.h" \
 	"src/LoaderThread.h" \
 	"src/SensorThread.h" \
 	"src/Game.h" \
-	"src/KinectBlocks.h"
+	"src/Kinetris.h"
 
 SOURCES += "src/Pair.cpp" \
 	"src/Ruleset.cpp" \
@@ -77,6 +78,7 @@ SOURCES += "src/Pair.cpp" \
 	"src/VisualMatrix.cpp" \
 	"src/Player.cpp" \
 	"src/InputManager.cpp" \
+	"src/QuitScreen.cpp" \
 	"src/MenuScreen.cpp" \
 	"src/PlayScreen.cpp" \
 	"src/HomeScreen.cpp" \
@@ -84,10 +86,10 @@ SOURCES += "src/Pair.cpp" \
 	"src/LoaderThread.cpp" \
 	"src/SensorThread.cpp" \
 	"src/Game.cpp" \
-	"src/KinectBlocks.cpp" \
+	"src/Kinetris.cpp" \
 	"src/main.cpp"
 
-RESOURCES += "KinectBlocks.qrc"
+RESOURCES += "Kinetris.qrc"
 
 # Windows
 win32 {

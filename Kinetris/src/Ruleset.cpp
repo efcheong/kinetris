@@ -286,8 +286,6 @@ const Pair Ruleset::_POSITION_START[_PIECE_TOTAL] = {
 	{18, 3}
 };
 
-Ruleset* Ruleset::_instance = NULL;
-
 Ruleset::Ruleset()
 	: QObject()
 {
@@ -306,14 +304,6 @@ Ruleset::Ruleset()
 
 Ruleset::~Ruleset()
 {
-}
-
-Ruleset* Ruleset::instance()
-{
-	if (!_instance)
-		_instance = new Ruleset();
-
-	return _instance;
 }
 
 int Ruleset::getRotation(Piece piece, int rotation) const

@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ________________________________________________________________________________
 
 
-This program makes use of Qt, version 4.7.1.
+This program makes use of Qt, version 4.7.4.
 
 Qt is Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
 
@@ -40,7 +40,7 @@ The corresponding source code for Qt is available at
 ________________________________________________________________________________
 
 
-This program makes use of OpenNI, version 1.0.0.25.
+This program makes use of OpenNI, version 1.3.2.3.
 
 OpenNI is Copyright (C) 2010 PrimeSense Ltd.
 
@@ -57,7 +57,7 @@ The corresponding source code for OpenNI is available at
 ________________________________________________________________________________
 
 
-This program makes use of NITE, version 1.3.0.18.
+This program makes use of NITE, version 1.4.1.2.
 
 NITE is Copyright (C) 2010 PrimeSense Ltd.
 

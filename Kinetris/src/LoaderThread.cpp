@@ -25,8 +25,7 @@ const qreal LoaderThread::UPDATE_INTERVAL = 1000.0f / 30.0f;
 LoaderThread* LoaderThread::_instance = NULL;
 
 LoaderThread::LoaderThread(QObject* parent)
-	: QThread(parent),
-	_mutex(QMutex::Recursive)
+	: QThread(parent)
 {
 	init();
 }
@@ -56,9 +55,6 @@ LoaderThread* LoaderThread::instance()
 
 void LoaderThread::init()
 {
-	_t0 = 0;
-	_timer = 0;
-
 	initState();
 }
 
@@ -68,21 +64,23 @@ void LoaderThread::initState()
 	_s1 = STATE_NONE;
 }
 
-void LoaderThread::initTimer()
-{
-	_t0 = QDateTime::currentMSecsSinceEpoch();
-}
-
 LoaderThread::State LoaderThread::getState() const
 {
-	QMutexLocker l(&_mutex);
+	QMutexLocker l(&_stateMutex);
 
 	return _state;
 }
 
+void LoaderThread::setState(State state)
+{
+	QMutexLocker l(&_stateMutex);
+
+	_s1 = state;
+}
+
 QPixmap LoaderThread::getCachedPixmap(const QString& uri) const
 {
-	QMutexLocker l(&_mutex);
+	QMutexLocker l(&_cacheMutex);
 
 	QPixmap pixmap;
 	if (!QPixmapCache::find(uri, pixmap))
@@ -94,53 +92,45 @@ QPixmap LoaderThread::getCachedPixmap(const QString& uri) const
 	return pixmap;
 }
 
-void LoaderThread::update(qreal dt)
+void LoaderThread::update()
 {
-	QMutexLocker l(&_mutex);
+	State state = STATE_NONE;
 
-	if (_s1 != _state)
 	{
-		onStateLeave(_state);
-		_state = _s1;
-		onStateEnter(_state);
+		QMutexLocker l(&_stateMutex);
+
+		if (_s1 != _state)
+		{
+			onStateLeave(_state);
+			_state = _s1;
+			onStateEnter(_state);
+		}
+
+		state = _state;
 	}
 
-	if (!_state)
+	if (!state)
 	{
 		//
 	}
-	else if (_state == STATE_LOAD)
+	else if (state == STATE_LOAD)
 	{
 		//
 	}
-	else if (_state == STATE_QUIT)
+	else if (state == STATE_QUIT)
 	{
 	}
-}
-
-void LoaderThread::setState(State state)
-{
-	QMutexLocker l(&_mutex);
-
-	_s1 = state;
 }
 
 void LoaderThread::run()
 {
 	initState();
-	initTimer();
 
-	forever
+	while (getState() != STATE_QUIT)
 	{
-		QMutexLocker l(&_mutex);
+		msleep(0);
 
-		qint64 t = QDateTime::currentMSecsSinceEpoch();
-		int dt = qMin<qreal>(UPDATE_INTERVAL, t - _t0);
-		update(dt);
-		_t0 = t;
-
-		if (_state == STATE_QUIT)
-			break;
+		update();
 	}
 }
 

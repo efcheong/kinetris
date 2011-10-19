@@ -20,13 +20,14 @@
 
 #include "Game.h"
 
-#include "KinectBlocks.h"
+#include "Kinetris.h"
 #include "SensorThread.h"
 #include "LoaderThread.h"
 #include "Background.h"
 #include "HomeScreen.h"
 #include "PlayScreen.h"
 #include "MenuScreen.h"
+#include "QuitScreen.h"
 #include "Player.h"
 #include "InputManager.h"
 #include "VisualMatrix.h"
@@ -35,9 +36,7 @@
 
 const qreal Game::_UPDATE_INTERVAL = 1000.0f / 30.0f; // ms
 
-Game* Game::_instance = NULL;
-
-Game::Game(KinectBlocks* parent)
+Game::Game(Kinetris* parent)
 	: QGraphicsScene(parent)
 {
 	init();
@@ -45,21 +44,6 @@ Game::Game(KinectBlocks* parent)
 
 Game::~Game()
 {
-}
-
-Game* Game::instance(KinectBlocks* parent)
-{
-	if (!_instance)
-		_instance = new Game(parent);
-
-	return _instance;
-}
-
-Game* Game::instance()
-{
-	Q_ASSERT(_instance);
-
-	return _instance;
 }
 
 void Game::init()
@@ -77,7 +61,7 @@ void Game::init()
 
 void Game::initSensor()
 {
-	_sensorThread = SensorThread::instance(this);
+	_sensorThread = new SensorThread(this);
 	
 	QObject::connect(_sensorThread, SIGNAL(evConnectBegin()), this, SLOT(onConnectBegin()));
 	QObject::connect(_sensorThread, SIGNAL(evConnectError()), this, SLOT(onConnectError()));
@@ -95,7 +79,8 @@ void Game::initSensor()
 	QObject::connect(_sensorThread, SIGNAL(evFocusLose()), this, SLOT(onFocusLose()));
 	QObject::connect(_sensorThread, SIGNAL(evFocusSwap()), this, SLOT(onFocusSwap()));
 
-	QObject::connect(_sensorThread, SIGNAL(evSteady()), this, SLOT(onSteady()));
+	QObject::connect(_sensorThread, SIGNAL(evSteadyBegin()), this, SLOT(onSteadyBegin()));
+	QObject::connect(_sensorThread, SIGNAL(evSteadyEnd()), this, SLOT(onSteadyEnd()));
 	QObject::connect(_sensorThread, SIGNAL(evCircle(int)), this, SLOT(onCircle(int)));
 	QObject::connect(_sensorThread, SIGNAL(evSlideX(qreal)), this, SLOT(onSlideX(qreal)));
 	QObject::connect(_sensorThread, SIGNAL(evSlideY(qreal)), this, SLOT(onSlideY(qreal)));
@@ -105,8 +90,8 @@ void Game::initSensor()
 	QObject::connect(_sensorThread, SIGNAL(evPush(qreal, qreal)), this, SLOT(onPush(qreal, qreal)));
 	QObject::connect(_sensorThread, SIGNAL(evWave()), this, SLOT(onWave()));
 
-	qRegisterMetaType<QImage>("QImage");
-	QObject::connect(_sensorThread, SIGNAL(evUsersMap(QImage)), this, SLOT(onUsersMap(QImage)));
+	qRegisterMetaType<QPixmap>("QPixmap");
+	QObject::connect(_sensorThread, SIGNAL(evUsersMap(QPixmap)), this, SLOT(onUsersMap(QPixmap)));
 }
 
 void Game::initLoader()
@@ -157,6 +142,11 @@ void Game::initSprite()
 	addItem(_menuScreen->getSprite());
 	_menuScreen->getSprite()->setZValue(8.0f);
 	_menuScreen->hide();
+
+	_quitScreen = new QuitScreen(this);
+	addItem(_quitScreen->getSprite());
+	_quitScreen->getSprite()->setZValue(8.0f);
+	_quitScreen->hide();
 }
 
 void Game::initEffect()
@@ -169,6 +159,9 @@ void Game::initPlayer()
 
 	_inputManager = new InputManager(this);
 	_player->setInputManager(_inputManager);
+
+	QObject::connect(_player, SIGNAL(evPlay()), this, SLOT(onPlay()));
+	QObject::connect(_player, SIGNAL(evQuit(bool)), this, SLOT(onQuit(bool)));
 }
 
 void Game::initMatrix()
@@ -186,6 +179,11 @@ void Game::initMatrix()
 Game::State Game::getState() const
 {
 	return _state;
+}
+
+void Game::setState(State state)
+{
+	_s1 = state;
 }
 
 void Game::update(qreal dt)
@@ -210,6 +208,8 @@ void Game::update(qreal dt)
 		_homeScreen->update(dt);
 
 		_inputManager->update(dt);
+
+		_player->update(dt);
 	}
 	else if (_state == STATE_PLAY)
 	{
@@ -236,12 +236,17 @@ void Game::update(qreal dt)
 		_menuScreen->update(dt);
 
 		_inputManager->update(dt);
-	}
-}
 
-void Game::setState(State state)
-{
-	_s1 = state;
+		_player->update(dt);
+	}
+	else if (_state == STATE_QUIT)
+	{
+		_quitScreen->update(dt);
+
+		_inputManager->update(dt);
+
+		_player->update(dt);
+	}
 }
 
 void Game::onStateEnter(State state)
@@ -262,23 +267,38 @@ void Game::onStateEnter(State state)
 	}
 	else if (state == STATE_HOME)
 	{
+		_quitScreen->hide();
 		_menuScreen->hide();
 		_playScreen->hide();
 		_homeScreen->show();
 
 		initMatrix();
 
+		_player->setState(Player::STATE_HOME);
+
 		_background->setSpeed(_matrix->getLevel());
 	}
 	else if (state == STATE_PLAY)
 	{
+		_quitScreen->hide();
 		_menuScreen->hide();
 		_homeScreen->hide();
 		_playScreen->show();
+
+		_player->setState(Player::STATE_PLAY);
 	}
 	else if (state == STATE_MENU)
 	{
+		_quitScreen->hide();
 		_menuScreen->show();
+
+		_player->setState(Player::STATE_MENU);
+	}
+	else if (state == STATE_QUIT)
+	{
+		_quitScreen->show();
+
+		_player->setState(Player::STATE_QUIT);
 	}
 }
 
@@ -297,6 +317,9 @@ void Game::onStateLeave(State state)
 	{
 	}
 	else if (state == STATE_MENU)
+	{
+	}
+	else if (state == STATE_QUIT)
 	{
 	}
 }
@@ -354,6 +377,15 @@ void Game::keyPressEvent(QKeyEvent* event)
 			setState(Game::STATE_PLAY);
 		}
 	}
+	else if (_state == STATE_QUIT)
+	{
+		if (event->key() == Qt::Key_Escape)
+		{
+			_inputManager->setState(InputManager::INPUT_PLAY, 1.0f, true);
+
+			setState(Game::STATE_PLAY);
+		}
+	}
 
 	QGraphicsScene::keyPressEvent(event);
 }
@@ -378,6 +410,10 @@ void Game::keyReleaseEvent(QKeyEvent* event)
 	{
 		//
 	}
+	else if (_state == STATE_QUIT)
+	{
+		//
+	}
 
 	QGraphicsScene::keyReleaseEvent(event);
 }
@@ -392,12 +428,15 @@ void Game::onConnectBegin()
 	}
 	else if (_state == STATE_HOME)
 	{
-		_homeScreen->setStatus(tr("Connecting to Kinect..."));
+		_homeScreen->setStatus(tr("Connecting to sensor..."));
 	}
 	else if (_state == STATE_PLAY)
 	{
 	}
 	else if (_state == STATE_MENU)
+	{
+	}
+	else if (_state == STATE_QUIT)
 	{
 	}
 }
@@ -412,12 +451,15 @@ void Game::onConnectError()
 	}
 	else if (_state == STATE_HOME)
 	{
-		_homeScreen->setStatus(tr("Unable to connect to Kinect."));
+		_homeScreen->setStatus(tr("Unable to connect to sensor."));
 	}
 	else if (_state == STATE_PLAY)
 	{
 	}
 	else if (_state == STATE_MENU)
+	{
+	}
+	else if (_state == STATE_QUIT)
 	{
 	}
 }
@@ -432,7 +474,7 @@ void Game::onConnect()
 	}
 	else if (_state == STATE_HOME)
 	{
-		_homeScreen->setStatus(tr("Detecting player... (Please step back from the Kinect.)"));
+		_homeScreen->setStatus(tr("Detecting player... (Please step back from the sensor.)"));
 	}
 	else if (_state == STATE_PLAY)
 	{
@@ -440,6 +482,9 @@ void Game::onConnect()
 	else if (_state == STATE_MENU)
 	{
 		_menuScreen->setStatus(tr("Wave to continue."));
+	}
+	else if (_state == STATE_QUIT)
+	{
 	}
 }
 
@@ -453,16 +498,21 @@ void Game::onDisconnect()
 	}
 	else if (_state == STATE_HOME)
 	{
-		_homeScreen->setStatus(tr("Lost connection to Kinect."));
+		_homeScreen->setStatus(tr("Lost connection to sensor."));
 	}
 	else if (_state == STATE_PLAY)
 	{
-		_menuScreen->setStatus(tr("Lost connection to Kinect. Reconnecting..."));
+		_menuScreen->setStatus(tr("Lost connection to sensor. Reconnecting..."));
 		setState(STATE_MENU);
 	}
 	else if (_state == STATE_MENU)
 	{
-		_menuScreen->setStatus(tr("Lost connection to Kinect. Reconnecting..."));
+		_menuScreen->setStatus(tr("Lost connection to sensor. Reconnecting..."));
+	}
+	else if (_state == STATE_QUIT)
+	{
+		_menuScreen->setStatus(tr("Lost connection to sensor. Reconnecting..."));
+		setState(STATE_MENU);
 	}
 }
 
@@ -484,6 +534,9 @@ void Game::onUserEnter()
 	else if (_state == STATE_MENU)
 	{
 	}
+	else if (_state == STATE_QUIT)
+	{
+	}
 }
 
 void Game::onUserLeave()
@@ -501,6 +554,9 @@ void Game::onUserLeave()
 	{
 	}
 	else if (_state == STATE_MENU)
+	{
+	}
+	else if (_state == STATE_QUIT)
 	{
 	}
 }
@@ -524,6 +580,9 @@ void Game::onSessionBegin()
 	{
 		setState(Game::STATE_PLAY);
 	}
+	else if (_state == STATE_QUIT)
+	{
+	}
 }
 
 void Game::onSessionEnd()
@@ -546,6 +605,11 @@ void Game::onSessionEnd()
 	else if (_state == STATE_MENU)
 	{
 	}
+	else if (_state == STATE_QUIT)
+	{
+		_menuScreen->setStatus(tr("Wave to continue."));
+		setState(STATE_MENU);
+	}
 }
 
 void Game::onFocusGain()
@@ -566,6 +630,10 @@ void Game::onFocusGain()
 		//
 	}
 	else if (_state == STATE_MENU)
+	{
+		//
+	}
+	else if (_state == STATE_QUIT)
 	{
 		//
 	}
@@ -592,15 +660,24 @@ void Game::onFocusLose()
 	{
 		//
 	}
+	else if (_state == STATE_QUIT)
+	{
+		//
+	}
 }
 
 void Game::onFocusSwap()
 {
 }
 
-void Game::onSteady()
+void Game::onSteadyBegin()
 {
-	_inputManager->setState(InputManager::INPUT_NONE, 1.0f, true);
+	_inputManager->setState(InputManager::INPUT_NONE, 1.0f);
+}
+
+void Game::onSteadyEnd()
+{
+	_inputManager->setState(InputManager::INPUT_NONE, 0.0f);
 }
 
 void Game::onCircle(int direction)
@@ -665,7 +742,7 @@ void Game::onWave()
 	}
 	else if (_state == STATE_PLAY)
 	{
-		if (dynamic_cast<Matrix*>(_matrix)->getState() == Matrix::STATE_OVER)
+		if (static_cast<Matrix*>(_matrix)->getState() == Matrix::STATE_OVER)
 			setState(STATE_HOME);
 //		else
 //			setState(STATE_MENU);
@@ -674,9 +751,13 @@ void Game::onWave()
 	{
 		setState(STATE_PLAY);
 	}
+	else if (_state == STATE_QUIT)
+	{
+		setState(STATE_PLAY);
+	}
 }
 
-void Game::onUsersMap(QImage image)
+void Game::onUsersMap(QPixmap pixmap)
 {
 	if (!_state)
 	{
@@ -686,13 +767,16 @@ void Game::onUsersMap(QImage image)
 	}
 	else if (_state == STATE_HOME)
 	{
-		_homeScreen->setAvatar(image);
+		_homeScreen->setAvatar(pixmap);
 	}
 	else if (_state == STATE_PLAY)
 	{
-		_matrix->setAvatar(image);
+		_matrix->setAvatar(pixmap);
 	}
 	else if (_state == STATE_MENU)
+	{
+	}
+	else if (_state == STATE_QUIT)
 	{
 	}
 }
@@ -700,4 +784,17 @@ void Game::onUsersMap(QImage image)
 void Game::onLevel(int count)
 {
 	_background->setSpeed(_matrix->getRules()->getSpeed(_matrix->getLevel()));
+}
+
+void Game::onPlay()
+{
+	setState(STATE_PLAY);
+}
+
+void Game::onQuit(bool force)
+{
+	if (force)
+		QApplication::closeAllWindows();
+	else
+		setState(STATE_QUIT);
 }

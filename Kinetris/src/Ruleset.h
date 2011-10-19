@@ -43,9 +43,8 @@ public:
 		PIECE_L
 	};
 
+	Ruleset();
 	virtual ~Ruleset();
-
-	static Ruleset* instance();
 
 	int getRotation(Piece piece, int rotation) const;
 
@@ -90,13 +89,7 @@ protected:
 	QVector<Pair> _rotationShape;
 	QVector<Pair> _rotationNudge;
 
-	Ruleset();
-
 	QList<Piece> generateSequence() const;
-
-private:
-
-	static Ruleset* _instance;
 };
 
 #endif // RULESET_H

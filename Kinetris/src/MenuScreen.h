@@ -55,7 +55,6 @@ protected:
 
 	void init();
 	void initSprite();
-	void initEffect();
 };
 
 #endif // MENUSCREEN_H

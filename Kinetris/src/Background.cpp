@@ -29,8 +29,8 @@ const char Background::_IMAGE_FENCE[] = ":/res/fence.png";
 const char Background::_IMAGE_COVER_BG[] = ":/res/cover-bg.png";
 const char Background::_IMAGE_COVER_FG[] = ":/res/cover-fg.png";
 
-const qreal Background::_BACKGROUND_W = 1024.0f;
-const qreal Background::_BACKGROUND_H = 640.0f;
+const qreal Background::_BACKGROUND_W = 1280.0f;
+const qreal Background::_BACKGROUND_H = 720.0f;
 const qreal Background::_TEXTURE_W = 512.0f;
 const qreal Background::_TEXTURE_H = 512.0f;
 const qreal Background::_ROW_H = 16.0f;
@@ -54,55 +54,51 @@ void Background::init()
 void Background::initSprite()
 {
 	_sprite = new QGraphicsWidget();
+	_sprite->resize(_BACKGROUND_W, _BACKGROUND_H);
+	_sprite->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
 
 	QGraphicsRectItem* rect;
 	QGraphicsWidget* widget;
 
-	// Background
-	widget = new QGraphicsWidget();
-	widget->resize(_BACKGROUND_W, _BACKGROUND_H);
-	widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
-	widget->setParentItem(_sprite);
-	widget->setPos(0.0f, 0.0f);
-
-	// Background Layer
+	// Background Layer 1
 	widget = new QGraphicsWidget();
 	widget->setParentItem(_sprite);
 	widget->setPos(0.0f, -_ROW_H);
 	_sprite_bg << widget;
 
-	// Background Solid
+	// Background Solid 1
 	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W, _BACKGROUND_H * 2.0f);
 	rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x80, 0xC0)));
 	rect->setParentItem(widget);
 
-	// Background Noise
-	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W + 16.0f, _BACKGROUND_H * 2.0f);
+	// Background Noise 1
+	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W + _ROW_H, _BACKGROUND_H * 2.0f);
 	rect->setBrush(QBrush(LoaderThread::instance()->getCachedPixmap(_IMAGE_NOISE).scaled(_TEXTURE_W, _TEXTURE_H)));
 	rect->setParentItem(widget);
-	rect->setPos(-8.0f, -8.0f);
+	rect->setPos(-(_ROW_H * 0.5f), 0.0f);
 
-	// Background Layer
+	// Background Layer 2
 	widget = new QGraphicsWidget();
 	widget->setParentItem(_sprite);
 	widget->setPos(0.0f, 0.0f);
 	_sprite_bg << widget;
 
-	// Background Solid
+	// Background Solid 2
 	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W, _BACKGROUND_H * 2.0f);
 	rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x80, 0xC0)));
 	rect->setParentItem(widget);
 
-	// Background Noise
-	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W + 16.0f, _BACKGROUND_H * 2.0f);
+	// Background Noise 2
+	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W + _ROW_H, _BACKGROUND_H * 2.0f);
 	rect->setBrush(QBrush(LoaderThread::instance()->getCachedPixmap(_IMAGE_NOISE).scaled(_TEXTURE_W, _TEXTURE_H)));
 	rect->setParentItem(widget);
-	rect->setPos(-8.0f, -8.0f);
+	rect->setPos(-(_ROW_H * 0.5f), 0.0f);
 
 	// Fence
-	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W, _BACKGROUND_H);
+	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W, _BACKGROUND_H + _ROW_H);
 	rect->setBrush(QBrush(LoaderThread::instance()->getCachedPixmap(_IMAGE_FENCE)));
 	rect->setParentItem(_sprite);
+	rect->setPos(0.0f, -(_ROW_H * 0.5f));
 
 	// Background Gradient
 	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W, _BACKGROUND_H);

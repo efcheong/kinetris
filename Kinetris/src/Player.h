@@ -34,6 +34,11 @@ class Player : public QObject
 {
 	Q_OBJECT
 
+signals:
+
+	void evPlay();
+	void evQuit(bool force = false);
+
 public:
 
 	enum State
@@ -42,13 +47,15 @@ public:
 		STATE_WAIT,
 		STATE_HOME,
 		STATE_PLAY,
-		STATE_MENU
+		STATE_MENU,
+		STATE_QUIT
 	};
 
 	Player(Game* parent);
 	virtual ~Player();
 
 	State getState() const;
+	void setState(State state);
 
 	InputManager* getInputManager() const;
 	void setInputManager(InputManager* inputManager);
@@ -64,12 +71,12 @@ protected:
 	State _s1;
 
 	InputManager* _inputManager;
+	QVector<qreal> _inputTimer;
+
 	VisualMatrix* _matrix;
 
 	void init();
 	void initState();
-	
-	void setState(State state);
 
 	void onStateEnter(State state);
 	void onStateLeave(State state);

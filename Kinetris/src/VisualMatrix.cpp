@@ -108,7 +108,7 @@ void VisualMatrix::initSprite()
 	widget->setPos(170.0f, 50.0f);
 	item = new QGraphicsPixmapItem();
 	item->setParentItem(widget);
-	item->setPos(((_BLOCK_LARGE * 10) - 640.0f) * 0.5f, 0.0f);
+	item->setPos(((_BLOCK_LARGE * 10) - (320.0f / 0.75f)) * 0.5f, (_BLOCK_LARGE * 20) - 320.0f);
 	_avatar = widget;
 
 	// Lines
@@ -388,9 +388,10 @@ QGraphicsWidget* VisualMatrix::getSprite() const
 	return _sprite;
 }
 
-void VisualMatrix::setAvatar(QImage avatar)
+void VisualMatrix::setAvatar(QPixmap pixmap)
 {
-	dynamic_cast<QGraphicsPixmapItem*>(_avatar->childItems().first())->setPixmap(QPixmap::fromImage(avatar));
+	static_cast<QGraphicsPixmapItem*>(_avatar->childItems().first())->setPixmap(pixmap);
+	static_cast<QGraphicsPixmapItem*>(_avatar->childItems().first())->setScale(320.0f / pixmap.height());
 }
 
 void VisualMatrix::move(int direction)

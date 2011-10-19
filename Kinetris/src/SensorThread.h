@@ -49,7 +49,8 @@ signals:
 	void evFocusSwap();
 	void evFocusMove();
 
-	void evSteady();
+	void evSteadyBegin();
+	void evSteadyEnd();
 	void evCircle(int direction);
 	void evSlideX(qreal direction);
 	void evSlideY(qreal direction);
@@ -59,7 +60,7 @@ signals:
 	void evPush(qreal speed, qreal angle);
 	void evWave();
 
-	void evUsersMap(QImage image);
+	void evUsersMap(QPixmap pixmap);
 
 public:
 
@@ -71,14 +72,10 @@ public:
 		STATE_QUIT
 	};
 
+	SensorThread(QObject* parent);
 	virtual ~SensorThread();
 
-	static SensorThread* instance(QObject* parent);
-	static SensorThread* instance();
-
 	State getState() const;
-
-	void update(qreal dt);
 
 protected:
 
@@ -86,15 +83,9 @@ protected:
 
 	static const qreal _UPDATE_INTERVAL; // ms
 
-	static int _c0;
-
-	mutable QMutex _mutex;
-
 	State _state;
 	State _s1;
-
-	qint64 _t0;
-	int _timer;
+	mutable QMutex _stateMutex;
 
 	xn::Context* _context;
 	xn::DepthGenerator _depthGenerator;
@@ -112,14 +103,14 @@ protected:
 	XnVPushDetector* _pushDetector;
 	XnVWaveDetector* _waveDetector;
 
-	QVector<quint8> _usersMap;
+	QImage _usersMap;
+//	QVector<int> _depthHistogram;
 
-	SensorThread(QObject* parent);
+	int _c0;
 
 	void init();
 	void initState();
 
-	void initTimer();
 	void initContext();
 	void initSession();
 
@@ -130,33 +121,33 @@ protected:
 
 	void run();
 
+	void update();
+
 	void onStateEnter(State state);
 	void onStateLeave(State state);
 
-	static void XN_CALLBACK_TYPE onNewUser(xn::UserGenerator& generator, XnUserID user, void* cookie);
-	static void XN_CALLBACK_TYPE onLostUser(xn::UserGenerator& generator, XnUserID user, void* cookie);
+	static void XN_CALLBACK_TYPE onNewUser(xn::UserGenerator& generator, XnUserID user, void* self);
+	static void XN_CALLBACK_TYPE onLostUser(xn::UserGenerator& generator, XnUserID user, void* self);
 
-	static void XN_CALLBACK_TYPE onSessionStart(const XnPoint3D& position, void* context);
-	static void XN_CALLBACK_TYPE onSessionEnd(void* context);
+	static void XN_CALLBACK_TYPE onSessionStart(const XnPoint3D& position, void* self);
+	static void XN_CALLBACK_TYPE onSessionEnd(void* self);
 
-	static void XN_CALLBACK_TYPE onPrimaryPointCreate(const XnVHandPointContext* hand, const XnPoint3D& position, void* context);
-	static void XN_CALLBACK_TYPE onPrimaryPointDestroy(XnUInt32 id, void* context);
-	static void XN_CALLBACK_TYPE onPrimaryPointReplace(XnUInt32 id, const XnVHandPointContext* hand, void* context);
+	static void XN_CALLBACK_TYPE onPrimaryPointCreate(const XnVHandPointContext* hand, const XnPoint3D& position, void* self);
+	static void XN_CALLBACK_TYPE onPrimaryPointDestroy(XnUInt32 id, void* self);
+	static void XN_CALLBACK_TYPE onPrimaryPointReplace(XnUInt32 id, const XnVHandPointContext* hand, void* self);
 
-	static void XN_CALLBACK_TYPE onSteady(XnFloat velocity, void* context);
-	static void XN_CALLBACK_TYPE onCircle(XnFloat count, XnBool confidence, const XnVCircle* circle, void* context);
-	static void XN_CALLBACK_TYPE onSlideX(XnFloat value, void* context);
-	static void XN_CALLBACK_TYPE onSlideY(XnFloat value, void* context);
-	static void XN_CALLBACK_TYPE onSlideZ(XnFloat value, void* context);
-	static void XN_CALLBACK_TYPE onSwipe(XnVDirection direction, XnFloat speed, XnFloat angle, void* context);
-	static void XN_CALLBACK_TYPE onPush(XnFloat speed, XnFloat angle, void* context);
-	static void XN_CALLBACK_TYPE onWave(void* context);
+	static void XN_CALLBACK_TYPE onSteady(XnUInt32 id, XnFloat standardDeviation, void* self);
+	static void XN_CALLBACK_TYPE onNotSteady(XnUInt32 id, XnFloat standardDeviation, void* self);
+	static void XN_CALLBACK_TYPE onCircle(XnFloat count, XnBool confidence, const XnVCircle* circle, void* self);
+	static void XN_CALLBACK_TYPE onSlideX(XnFloat value, void* self);
+	static void XN_CALLBACK_TYPE onSlideY(XnFloat value, void* self);
+	static void XN_CALLBACK_TYPE onSlideZ(XnFloat value, void* self);
+	static void XN_CALLBACK_TYPE onSwipe(XnVDirection direction, XnFloat speed, XnFloat angle, void* self);
+	static void XN_CALLBACK_TYPE onPush(XnFloat speed, XnFloat angle, void* self);
+	static void XN_CALLBACK_TYPE onWave(void* self);
 
-	void onUsersMap();
-
-private:
-
-	static SensorThread* _instance;
+	void onDepthMap();
+	void onImageMap();
 };
 
 #endif // SENSORTHREAD_H

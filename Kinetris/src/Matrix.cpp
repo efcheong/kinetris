@@ -44,7 +44,7 @@ void Matrix::init()
 
 void Matrix::initRules()
 {
-	_rules = Ruleset::instance();
+	_rules = new Ruleset();
 }
 
 void Matrix::initField()
@@ -93,6 +93,18 @@ void Matrix::initTimer()
 Matrix::State Matrix::getState() const
 {
 	return _state;
+}
+
+void Matrix::setState(State state, bool force)
+{
+	_s1 = state;
+
+	if (force)
+	{
+		onStateLeave(_state);
+		_state = _s1;
+		onStateEnter(_state);
+	}
 }
 
 Ruleset* Matrix::getRules() const
@@ -293,18 +305,6 @@ void Matrix::update(qreal dt)
 	}
 	else if (_state == STATE_OVER)
 	{
-	}
-}
-
-void Matrix::setState(State state, bool force)
-{
-	_s1 = state;
-
-	if (force)
-	{
-		onStateLeave(_state);
-		_state = _s1;
-		onStateEnter(_state);
 	}
 }
 
