@@ -51,7 +51,7 @@ public:
 
 	QGraphicsWidget* getSprite() const;
 
-	void setAvatar(QImage avatar);
+	void setAvatar(QPixmap pixmap);
 
 	virtual void move(int direction);
 	virtual void turn(int direction);

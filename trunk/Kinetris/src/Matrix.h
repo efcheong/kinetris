@@ -75,6 +75,7 @@ public:
 	virtual ~Matrix();
 
 	State getState() const;
+	void setState(State state, bool force = false);
 
 	Ruleset* getRules() const;
 
@@ -143,8 +144,6 @@ protected:
 	void initTetrominoes();
 	void initState();
 	void initTimer();
-
-	void setState(State state, bool force = false);
 
 	virtual void setLines(int lines);
 	virtual void setLevel(int level);

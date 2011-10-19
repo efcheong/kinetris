@@ -18,22 +18,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KINECTBLOCKS_H
-#define KINECTBLOCKS_H
+#ifndef KINETRIS_H
+#define KINETRIS_H
 
 #include <QtGui/QtGui>
 #include <QtOpenGL/QtOpenGL>
 
 class Game;
 
-class KinectBlocks : public QMainWindow
+class Kinetris : public QMainWindow
 {
 	Q_OBJECT
 
 public:
 
-	KinectBlocks();
-	virtual ~KinectBlocks();
+	Kinetris();
+	virtual ~Kinetris();
 
 	QGraphicsView* getView() const;
 
@@ -42,4 +42,4 @@ protected:
 	QGraphicsView* _view;
 };
 
-#endif // KINECTBLOCKS_H
+#endif // KINETRIS_H

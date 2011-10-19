@@ -18,34 +18,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "KinectBlocks.h"
+#include "Kinetris.h"
 
 #include "Game.h"
 
-KinectBlocks::KinectBlocks()
+Kinetris::Kinetris()
     : QMainWindow()
 {
-	setWindowTitle(tr("Kinetris 1.0.0 Beta 1"));
-	setFixedSize(1024, 640);
-	move(0, 0);
+	setWindowTitle(tr("Kinetris 1.0.0 Beta 2"));
+	showFullScreen();
 
 	_view = new QGraphicsView(NULL, this);
 	_view->setFrameStyle(QFrame::NoFrame);
 	_view->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
 	_view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
 	_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
-	_view->setSceneRect(0.0f, 0.0f, width(), height());
+	_view->setBackgroundBrush(QBrush(QColor::fromRgb(0x00, 0x00, 0x00, 0xFF)));
+	_view->setSceneRect(0.0f, 0.0f, 1280.0f, 720.0f);
 	_view->setCursor(Qt::BlankCursor);
 	setCentralWidget(_view);
 
-	_view->setScene(Game::instance(this));
+	qreal k = height() / 720.0f;
+	_view->scale(k, k);
+
+	_view->setScene(new Game(this));
 }
 
-KinectBlocks::~KinectBlocks()
+Kinetris::~Kinetris()
 {
 }
 
-QGraphicsView* KinectBlocks::getView() const
+QGraphicsView* Kinetris::getView() const
 {
 	return _view;
 }

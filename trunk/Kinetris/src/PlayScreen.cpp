@@ -25,6 +25,9 @@
 
 #include "LoaderThread.h"
 
+const qreal PlayScreen::_BACKGROUND_W = 1280.0f;
+const qreal PlayScreen::_BACKGROUND_H = 720.0f;
+
 PlayScreen::PlayScreen(Game* parent)
 	: QObject(parent)
 {
@@ -70,7 +73,7 @@ void PlayScreen::setMatrix(VisualMatrix* matrix)
 	_matrix = matrix->getSprite();
 
 	_matrix->setParentItem(_sprite);
-	_matrix->setPos(222.0f, 4.0f);
+	_matrix->setPos(350.0f, 44.0f);
 	_matrix->setVisible(true);
 }
 

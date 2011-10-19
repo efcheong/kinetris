@@ -43,6 +43,7 @@ public:
 		INPUT_L1,
 		INPUT_R1,
 		INPUT_PLAY,
+		INPUT_QUIT,
 		INPUT_
 	};
 

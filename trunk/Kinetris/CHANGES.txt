@@ -1,0 +1,44 @@
+                            CHANGE LOG FOR KINETRIS                             
+
+
+________________________________________________________________________________
+
+
+1.0.0 BETA 2
+Release date: 2011 Oct 19
+
+
+COMMON
+
+- Updated program to support OpenNI 1.3.2.3 Unstable and NITE 1.4.1.2 Unstable.
+- Replaced usage of trademarks with appropriate, generic terms.
+- Improved performance of player mirror.
+- Mirror will now use image from sensor's depth camera if sensor does not have a
+  video camera.
+- Changed program to run in full-screen mode.
+- Changed program to target 1280×720 screen resolution.
+- Added gesture-based control for quitting the program.
+
+
+SOURCE
+
+- Updated project to Microsoft Visual Studio 2010.
+- Renamed files and classes using the project's working name to use "Kinetris".
+- Removed unnecessary usage of singleton pattern.
+- Removed unnecessary usage of recursive mutexes.
+- Various minor corrections and improvements.
+
+________________________________________________________________________________
+
+
+1.0.0 BETA 1
+Release date: 2011 Mar 05
+
+
+COMMON
+
+- Initial release.
+
+________________________________________________________________________________
+
+

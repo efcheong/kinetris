@@ -39,7 +39,7 @@ public:
 	QString getStatus() const;
 	void setStatus(const QString& status);
 
-	void setAvatar(QImage image);
+	void setAvatar(QPixmap pixmap);
 
 	void show();
 	void hide();
@@ -49,6 +49,9 @@ public:
 protected:
 
 	static const char _IMAGE_TITLE[];
+
+	static const qreal _BACKGROUND_W; // px
+	static const qreal _BACKGROUND_H; // px
 
 	static const qreal _SHOWEFFECT_DURATION; // sec
 	static const qreal _HIDEEFFECT_DURATION; // sec

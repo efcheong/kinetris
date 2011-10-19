@@ -24,8 +24,8 @@
 
 #include "LoaderThread.h"
 
-const qreal MenuScreen::_BACKGROUND_W = 1024.0f;
-const qreal MenuScreen::_BACKGROUND_H = 640.0f;
+const qreal MenuScreen::_BACKGROUND_W = 1280.0f;
+const qreal MenuScreen::_BACKGROUND_H = 720.0f;
 
 MenuScreen::MenuScreen(Game* parent)
 	: QObject(parent)
@@ -40,7 +40,6 @@ MenuScreen::~MenuScreen()
 void MenuScreen::init()
 {
 	initSprite();
-	initEffect();
 }
 
 void MenuScreen::initSprite()
@@ -51,19 +50,20 @@ void MenuScreen::initSprite()
 	QGraphicsSimpleTextItem* text;
 	QGraphicsProxyWidget* proxy;
 	QLabel* label;
+	QFont font;
 
 	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W, _BACKGROUND_H);
 	rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x00, 0x00, 0xC0)));
 	rect->setParentItem(_sprite);
 
-	QFont font = QApplication::font();
+	font = QApplication::font();
 	font.setCapitalization(QFont::AllUppercase);
 
 	text = new QGraphicsSimpleTextItem(tr("Paused"));
 	text->setBrush(QColor::fromRgb(0xFF, 0xFF, 0xFF));
 	text->setFont(font);
 	text->setParentItem(_sprite);
-	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 268.0f - 6.0f);
+	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 308.0f - 6.0f);
 
 	label = new QLabel();
 	label->resize(784, 24);
@@ -72,12 +72,38 @@ void MenuScreen::initSprite()
 	proxy = new QGraphicsProxyWidget();
 	proxy->setParentItem(_sprite);
 	proxy->setWidget(label);
-	proxy->setPos(120.0f, 308.0f - 6.0f);
+	proxy->setPos(248.0f, 348.0f - 6.0f);
 	_status = label;
-}
 
-void MenuScreen::initEffect()
-{
+	font = QApplication::font();
+	font.setFamily("Arial");
+	font.setPixelSize(16);
+	font.setWeight(QFont::Bold);
+	font.setStretch(80);
+
+	text = new QGraphicsSimpleTextItem(tr("Slide left and right: Move."));
+	text->setBrush(QColor::fromRgb(0xC0, 0xC0, 0xC0));
+	text->setFont(font);
+	text->setParentItem(_sprite);
+	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 512.0f - 6.0f);
+
+	text = new QGraphicsSimpleTextItem(tr("Swipe up: Hold.  Swipe down: Drop."));
+	text->setBrush(QColor::fromRgb(0xC0, 0xC0, 0xC0));
+	text->setFont(font);
+	text->setParentItem(_sprite);
+	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 532.0f - 6.0f);
+
+	text = new QGraphicsSimpleTextItem(tr("Pull back, and make circles: Rotate."));
+	text->setBrush(QColor::fromRgb(0xC0, 0xC0, 0xC0));
+	text->setFont(font);
+	text->setParentItem(_sprite);
+	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 552.0f - 6.0f);
+
+	text = new QGraphicsSimpleTextItem(tr("To quit: Slide up for 3 sec, while game is unpaused."));
+	text->setBrush(QColor::fromRgb(0xC0, 0xC0, 0xC0));
+	text->setFont(font);
+	text->setParentItem(_sprite);
+	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 120.0f - 6.0f);
 }
 
 QGraphicsWidget* MenuScreen::getSprite() const

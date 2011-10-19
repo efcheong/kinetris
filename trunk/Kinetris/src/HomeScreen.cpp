@@ -26,6 +26,9 @@
 
 const char HomeScreen::_IMAGE_TITLE[] = ":/res/title.png";
 
+const qreal HomeScreen::_BACKGROUND_W = 1280.0f;
+const qreal HomeScreen::_BACKGROUND_H = 720.0f;
+
 const qreal HomeScreen::_SHOWEFFECT_DURATION = 1.0f; // sec
 const qreal HomeScreen::_HIDEEFFECT_DURATION = 1.0f; // sec
 
@@ -55,17 +58,18 @@ void HomeScreen::initSprite()
 	QGraphicsSimpleTextItem* text;
 	QGraphicsProxyWidget* proxy;
 	QLabel* label;
+	QFont font;
 
 	item = new QGraphicsPixmapItem();
 	item->setParentItem(_sprite);
-	item->setPos(192.0f, 160.0f);
-	_avatar = dynamic_cast<QGraphicsPixmapItem*>(item);
+	item->setPos((_BACKGROUND_W - (400.0f / 0.75f)) * 0.5f, _BACKGROUND_H - 400.0f);
+	_avatar = static_cast<QGraphicsPixmapItem*>(item);
 
 	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(_IMAGE_TITLE));
 	item->setParentItem(_sprite);
-	item->setPos(104.0f, 88.0f);
+	item->setPos(232.0f, 128.0f);
 
-	QFont font("Arial");
+	font = QFont("Arial");
 	font.setPixelSize(12);
 	font.setWeight(QFont::Normal);
 	font.setStretch(80);
@@ -74,7 +78,7 @@ void HomeScreen::initSprite()
 	text->setBrush(QColor::fromRgb(0xFF, 0xFF, 0xFF));
 	text->setFont(font);
 	text->setParentItem(_sprite);
-	text->setPos(120.0f, 224.0f - 3.0f);
+	text->setPos(248.0f, 264.0f - 3.0f);
 
 	label = new QLabel();
 	label->resize(784, 24);
@@ -83,7 +87,7 @@ void HomeScreen::initSprite()
 	proxy = new QGraphicsProxyWidget();
 	proxy->setParentItem(_sprite);
 	proxy->setWidget(label);
-	proxy->setPos(120.0f, 552.0f - 6.0f);
+	proxy->setPos(248.0f, 592.0f - 6.0f);
 	_sprite_status = proxy;
 	_status = label;
 }
@@ -122,9 +126,10 @@ void HomeScreen::setStatus(const QString& status)
 	_s1 = status;
 }
 
-void HomeScreen::setAvatar(QImage image)
+void HomeScreen::setAvatar(QPixmap pixmap)
 {
-	_avatar->setPixmap(QPixmap::fromImage(image));
+	_avatar->setPixmap(pixmap);
+	_avatar->setScale(400.0f / pixmap.height());
 }
 
 void HomeScreen::show()
@@ -135,7 +140,7 @@ void HomeScreen::show()
 void HomeScreen::hide()
 {
 	_sprite->setVisible(false);
-	setStatus(tr("Connecting to Kinect..."));
+	setStatus(tr("Connecting to sensor..."));
 }
 
 void HomeScreen::update(qreal dt)
