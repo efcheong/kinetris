@@ -1,0 +1,66 @@
+                                    KINETRIS                                    
+
+
+________________________________________________________________________________
+
+
+Kinetris ("this program") is Copyright (C) 2011 Conan Chen.
+Contact: Conan Chen <http://conanchen.com/>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+________________________________________________________________________________
+
+
+This program makes use of Qt, version 4.7.4.
+
+Qt is Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+
+Qt is used by this program under the terms of the
+GNU Lesser General Public License, version 2.1, as published by the
+Free Software Foundation.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+The corresponding source code for Qt is available at
+<http://qt.nokia.com/>.
+
+________________________________________________________________________________
+
+
+This program makes use of OpenNI, version 1.3.2.3.
+
+OpenNI is Copyright (C) 2010 PrimeSense Ltd.
+
+OpenNI is used by this program under the terms of the
+GNU Lesser General Public License, version 3, as published by the
+Free Software Foundation.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+The corresponding source code for OpenNI is available at
+<http://openni.org/>.
+
+________________________________________________________________________________
+
+
+This program makes use of NITE, version 1.4.1.2.
+
+NITE is Copyright (C) 2010 PrimeSense Ltd.
+
+________________________________________________________________________________
+
+
