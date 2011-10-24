@@ -71,7 +71,7 @@ Download Microsoft Visual C++ 2010 Redistributable Package from
 
 6. Install Kinetris
 
-Download Kinetris 1.0.0 Beta 2 from
+Download Kinetris 1.0.0 Beta 3 from
 <http://conanchen.com/Kinetris/download/Windows>. Unpack the archive to a folder
 of your choice.
 

@@ -93,6 +93,18 @@ RESOURCES += "Kinetris.qrc"
 
 # Windows
 win32 {
+	RC_FILE += "Kinetris.rc"
+}
+# Mac
+macx {
+	ICON += "res/appicon.icns"
+}
+# Linux
+unix:!macx {
+}
+
+# Windows
+win32 {
 	QMAKE_PRE_LINK = $$quote(copy /y \"OpenNI.xml\" \"$$replace(DESTDIR, "/", "\\")\\\" &)
 }
 # Mac

@@ -1,12 +1,14 @@
 <RCC>
     <qresource>
+		<file>res/appicon.png</file>
+
 		<file>res/title.png</file>
-		
+
 		<file>res/noise.png</file>
 		<file>res/fence.png</file>
 		<file>res/cover-bg.png</file>
 		<file>res/cover-fg.png</file>
-		
+
         <file>res/frame-bg.png</file>
 		<file>res/frame-mg.png</file>
         <file>res/frame-fg.png</file>
