@@ -1,0 +1,29 @@
+<RCC>
+    <qresource>
+		<file>res/appicon.png</file>
+
+		<file>res/title.png</file>
+
+		<file>res/noise.png</file>
+		<file>res/fence.png</file>
+		<file>res/cover-bg.png</file>
+		<file>res/cover-fg.png</file>
+
+        <file>res/frame-bg.png</file>
+		<file>res/frame-mg.png</file>
+        <file>res/frame-fg.png</file>
+        <file>res/lines-progress.png</file>
+        <file>res/block-i.png</file>
+        <file>res/block-o.png</file>
+        <file>res/block-t.png</file>
+        <file>res/block-s.png</file>
+        <file>res/block-z.png</file>
+        <file>res/block-j.png</file>
+        <file>res/block-l.png</file>
+        <file>res/block-other.png</file>
+        <file>res/block-ghost.png</file>
+		<file>res/over.png</file>
+
+		<file>res/fail.png</file>
+    </qresource>
+</RCC>
