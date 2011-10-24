@@ -26,6 +26,7 @@ Kinetris::Kinetris()
     : QMainWindow()
 {
 	setWindowTitle(tr("Kinetris 1.0.0 Beta 2"));
+	setWindowIcon(QIcon(":/res/appicon.png"));
 	showFullScreen();
 
 	_view = new QGraphicsView(NULL, this);
