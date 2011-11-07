@@ -20,8 +20,6 @@
 
 #include "LoaderThread.h"
 
-const qreal LoaderThread::UPDATE_INTERVAL = 1000.0f / 30.0f;
-
 LoaderThread* LoaderThread::_instance = NULL;
 
 LoaderThread::LoaderThread(QObject* parent)

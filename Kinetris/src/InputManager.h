@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INPUTMANAGER_H
-#define INPUTMANAGER_H
+#ifndef KINETRIS_INPUTMANAGER_H
+#define KINETRIS_INPUTMANAGER_H
 
 #include <QtCore/QtCore>
 
@@ -83,4 +83,4 @@ protected:
 	void init();
 };
 
-#endif // INPUTMANAGER_H
+#endif // KINETRIS_INPUTMANAGER_H

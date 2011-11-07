@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef KINETRIS_MATRIX_H
+#define KINETRIS_MATRIX_H
 
 #include <QtCore/QtCore>
 
@@ -178,4 +178,4 @@ protected slots:
 	void onLock();
 };
 
-#endif // MATRIX_H
+#endif // KINETRIS_MATRIX_H

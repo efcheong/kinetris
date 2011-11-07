@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOADERTHREAD_H
-#define LOADERTHREAD_H
+#ifndef KINETRIS_LOADERTHREAD_H
+#define KINETRIS_LOADERTHREAD_H
 
 #include <QtGui/QtGui>
 
@@ -49,8 +49,6 @@ public:
 
 protected:
 
-	static const qreal UPDATE_INTERVAL;
-
 	State _state;
 	State _s1;
 	mutable QMutex _stateMutex;
@@ -76,4 +74,4 @@ private:
 	static LoaderThread* _instance;
 };
 
-#endif // LOADERTHREAD_H
+#endif // KINETRIS_LOADERTHREAD_H

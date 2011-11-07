@@ -39,9 +39,9 @@ macx {
 		"/usr/include/nite"
 
 	LIBS += -L"/usr/lib" \
-		-l"openNI" \
+		-l"OpenNI" \
 		-L"/usr/lib" \
-		-l"XnVNITE_1_4_1"
+		-l"XnVNite_1_4_1"
 }
 # Linux
 unix:!macx {
@@ -49,9 +49,9 @@ unix:!macx {
 		"/usr/include/nite"
 
 	LIBS += -L"/usr/lib" \
-		-l"openNI" \
+		-l"OpenNI" \
 		-L"/usr/lib" \
-		-l"XnVNITE_1_4_1"
+		-l"XnVNite_1_4_1"
 }
 
 HEADERS += "src/Pair.h" \

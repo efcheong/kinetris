@@ -25,7 +25,7 @@
 Kinetris::Kinetris()
     : QMainWindow()
 {
-	setWindowTitle(tr("Kinetris 1.0.0 Beta 2"));
+	setWindowTitle(tr("Kinetris 1.0.0 Beta 4"));
 	setWindowIcon(QIcon(":/res/appicon.png"));
 	showFullScreen();
 
@@ -39,7 +39,8 @@ Kinetris::Kinetris()
 	_view->setCursor(Qt::BlankCursor);
 	setCentralWidget(_view);
 
-	qreal k = height() / 720.0f;
+	// Scale graphics based on screen height, to maintain aspect ratio
+	qreal k = QApplication::desktop()->screenGeometry(this).height() / 720.0f;
 	_view->scale(k, k);
 
 	_view->setScene(new Game(this));

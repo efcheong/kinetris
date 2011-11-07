@@ -25,7 +25,7 @@
 // -col = Left
 // +col = Right
 
-const Pair Ruleset::_ROTATION_SHAPE[_PIECE_TOTAL * _SHAPE_TOTAL * _BLOCK_TOTAL] = {
+const Pair Ruleset::ROTATION_SHAPE[PIECE_TOTAL * SHAPE_TOTAL * BLOCK_TOTAL] = {
 	// Piece I
 
 	// Orientation 0 (clockwise)
@@ -130,7 +130,7 @@ const Pair Ruleset::_ROTATION_SHAPE[_PIECE_TOTAL * _SHAPE_TOTAL * _BLOCK_TOTAL] 
 // -col = Left
 // +col = Right
 
-const Pair Ruleset::_ROTATION_NUDGE[_PIECE_TOTAL * _SHAPE_TOTAL * _TURNDIRECTION_TOTAL * _NUDGE_TOTAL] = {
+const Pair Ruleset::ROTATION_NUDGE[PIECE_TOTAL * SHAPE_TOTAL * TURNDIRECTION_TOTAL * NUDGE_TOTAL] = {
 	// Piece I
 
 	// Orientation 0 (clockwise)
@@ -263,7 +263,7 @@ const Pair Ruleset::_ROTATION_NUDGE[_PIECE_TOTAL * _SHAPE_TOTAL * _TURNDIRECTION
 // -col = Left
 // +col = Right
 
-const Pair Ruleset::_POSITION_START[_PIECE_TOTAL] = {
+const Pair Ruleset::POSITION_START[PIECE_TOTAL] = {
 	// Piece I
 	{18, 3},
 
@@ -289,16 +289,16 @@ const Pair Ruleset::_POSITION_START[_PIECE_TOTAL] = {
 Ruleset::Ruleset()
 	: QObject()
 {
-	_rotationShape.reserve(_PIECE_TOTAL * _SHAPE_TOTAL * _BLOCK_TOTAL);
-	for (int i = 0, il = _PIECE_TOTAL * _SHAPE_TOTAL * _BLOCK_TOTAL; i < il; ++i)
+	_rotationShape.reserve(PIECE_TOTAL * SHAPE_TOTAL * BLOCK_TOTAL);
+	for (int i = 0, il = PIECE_TOTAL * SHAPE_TOTAL * BLOCK_TOTAL; i < il; ++i)
 	{
-		_rotationShape << _ROTATION_SHAPE[i];
+		_rotationShape << ROTATION_SHAPE[i];
 	}
 
-	_rotationNudge.reserve(_PIECE_TOTAL * _SHAPE_TOTAL * _TURNDIRECTION_TOTAL * _NUDGE_TOTAL);
-	for (int i = 0, il = _PIECE_TOTAL * _SHAPE_TOTAL * _TURNDIRECTION_TOTAL * _NUDGE_TOTAL; i < il; ++i)
+	_rotationNudge.reserve(PIECE_TOTAL * SHAPE_TOTAL * TURNDIRECTION_TOTAL * NUDGE_TOTAL);
+	for (int i = 0, il = PIECE_TOTAL * SHAPE_TOTAL * TURNDIRECTION_TOTAL * NUDGE_TOTAL; i < il; ++i)
 	{
-		_rotationNudge << _ROTATION_NUDGE[i];
+		_rotationNudge << ROTATION_NUDGE[i];
 	}
 }
 
@@ -308,27 +308,27 @@ Ruleset::~Ruleset()
 
 int Ruleset::getRotation(Piece piece, int rotation) const
 {
-	return rotation % _SHAPE_TOTAL;
+	return rotation % SHAPE_TOTAL;
 }
 
 QVector<Pair> Ruleset::getRotationShape(Piece piece, int rotation) const
 {
-	return _rotationShape.mid(((piece - 1) * _SHAPE_TOTAL * _BLOCK_TOTAL)
-		+ (((rotation < 0) ? (_SHAPE_TOTAL - 1) + ((rotation + 1) % _SHAPE_TOTAL) : rotation % _SHAPE_TOTAL) * _BLOCK_TOTAL),
-		_BLOCK_TOTAL);
+	return _rotationShape.mid(((piece - 1) * SHAPE_TOTAL * BLOCK_TOTAL)
+		+ (((rotation < 0) ? (SHAPE_TOTAL - 1) + ((rotation + 1) % SHAPE_TOTAL) : rotation % SHAPE_TOTAL) * BLOCK_TOTAL),
+		BLOCK_TOTAL);
 }
 
 QVector<Pair> Ruleset::getRotationNudge(Piece piece, int rotation, int direction) const
 {
-	return _rotationNudge.mid(((piece - 1) * _SHAPE_TOTAL * _TURNDIRECTION_TOTAL * _NUDGE_TOTAL)
-		+ (((rotation < 0) ? (_SHAPE_TOTAL - 1) + ((rotation + 1) % _SHAPE_TOTAL) : rotation % _SHAPE_TOTAL) * _TURNDIRECTION_TOTAL * _NUDGE_TOTAL)
-		+ (((direction < 0) ? 1 : 0) * _NUDGE_TOTAL),
-		_NUDGE_TOTAL);
+	return _rotationNudge.mid(((piece - 1) * SHAPE_TOTAL * TURNDIRECTION_TOTAL * NUDGE_TOTAL)
+		+ (((rotation < 0) ? (SHAPE_TOTAL - 1) + ((rotation + 1) % SHAPE_TOTAL) : rotation % SHAPE_TOTAL) * TURNDIRECTION_TOTAL * NUDGE_TOTAL)
+		+ (((direction < 0) ? 1 : 0) * NUDGE_TOTAL),
+		NUDGE_TOTAL);
 }
 
 Pair Ruleset::getStartPosition(Piece piece) const
 {
-	return _POSITION_START[(piece - 1)];
+	return POSITION_START[(piece - 1)];
 }
 
 Pair Ruleset::getAtticPosition() const

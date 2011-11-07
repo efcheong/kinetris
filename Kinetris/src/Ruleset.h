@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RULESET_H
-#define RULESET_H
+#ifndef KINETRIS_RULESET_H
+#define KINETRIS_RULESET_H
 
 #include <QtCore/QtCore>
 
@@ -76,15 +76,15 @@ public:
 
 protected:
 
-	static const int _PIECE_TOTAL = 7;
-	static const int _SHAPE_TOTAL = 4;
-	static const int _BLOCK_TOTAL = 4;
-	static const int _TURNDIRECTION_TOTAL = 2;
-	static const int _NUDGE_TOTAL = 5;
+	static const int PIECE_TOTAL = 7;
+	static const int SHAPE_TOTAL = 4;
+	static const int BLOCK_TOTAL = 4;
+	static const int TURNDIRECTION_TOTAL = 2;
+	static const int NUDGE_TOTAL = 5;
 
-	static const Pair _ROTATION_SHAPE[_PIECE_TOTAL * _SHAPE_TOTAL * _BLOCK_TOTAL];
-	static const Pair _ROTATION_NUDGE[_PIECE_TOTAL * _SHAPE_TOTAL * _TURNDIRECTION_TOTAL * _NUDGE_TOTAL];
-	static const Pair _POSITION_START[_PIECE_TOTAL];
+	static const Pair ROTATION_SHAPE[PIECE_TOTAL * SHAPE_TOTAL * BLOCK_TOTAL];
+	static const Pair ROTATION_NUDGE[PIECE_TOTAL * SHAPE_TOTAL * TURNDIRECTION_TOTAL * NUDGE_TOTAL];
+	static const Pair POSITION_START[PIECE_TOTAL];
 
 	QVector<Pair> _rotationShape;
 	QVector<Pair> _rotationNudge;
@@ -92,4 +92,4 @@ protected:
 	QList<Piece> generateSequence() const;
 };
 
-#endif // RULESET_H
+#endif // KINETRIS_RULESET_H
