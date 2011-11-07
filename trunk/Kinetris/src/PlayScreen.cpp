@@ -25,8 +25,8 @@
 
 #include "LoaderThread.h"
 
-const qreal PlayScreen::_BACKGROUND_W = 1280.0f;
-const qreal PlayScreen::_BACKGROUND_H = 720.0f;
+const qreal PlayScreen::BACKGROUND_W = 1280.0f;
+const qreal PlayScreen::BACKGROUND_H = 720.0f;
 
 PlayScreen::PlayScreen(Game* parent)
 	: QObject(parent)

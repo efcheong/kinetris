@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SENSORTHREAD_H
-#define SENSORTHREAD_H
+#ifndef KINETRIS_SENSORTHREAD_H
+#define KINETRIS_SENSORTHREAD_H
 
 #include <QtGui/QtGui>
 
@@ -60,7 +60,7 @@ signals:
 	void evPush(qreal speed, qreal angle);
 	void evWave();
 
-	void evUsersMap(QPixmap pixmap);
+	void evUsersMap(QImage image);
 
 public:
 
@@ -79,9 +79,10 @@ public:
 
 protected:
 
-	static const char _CONFIG[];
+	static const char CONFIG[];
 
-	static const qreal _UPDATE_INTERVAL; // ms
+	static const XnDepthPixel DEPTH_MIN;
+	static const XnDepthPixel DEPTH_MAX;
 
 	State _state;
 	State _s1;
@@ -150,4 +151,4 @@ protected:
 	void onImageMap();
 };
 
-#endif // SENSORTHREAD_H
+#endif // KINETRIS_SENSORTHREAD_H

@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MENUSCREEN_H
-#define MENUSCREEN_H
+#ifndef KINETRIS_MENUSCREEN_H
+#define KINETRIS_MENUSCREEN_H
 
 #include <QtGui/QtGui>
 
@@ -46,8 +46,8 @@ public:
 
 protected:
 
-	static const qreal _BACKGROUND_W; // px
-	static const qreal _BACKGROUND_H; // px
+	static const qreal BACKGROUND_W; // px
+	static const qreal BACKGROUND_H; // px
 
 	QGraphicsWidget* _sprite;
 
@@ -57,4 +57,4 @@ protected:
 	void initSprite();
 };
 
-#endif // MENUSCREEN_H
+#endif // KINETRIS_MENUSCREEN_H

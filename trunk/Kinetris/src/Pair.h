@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PAIR_H
-#define PAIR_H
+#ifndef KINETRIS_PAIR_H
+#define KINETRIS_PAIR_H
 
 struct Pair
 {

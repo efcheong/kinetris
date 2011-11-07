@@ -1,19 +1,25 @@
-                            HOW TO INSTALL KINETRIS                             
+                                    KINETRIS                                    
 
 
 ________________________________________________________________________________
 
 
-REQUIREMENTS
+ABOUT KINETRIS
 
 
-You must have the standalone model of the Kinect, not the model that comes
-bundled with the Xbox 360 S. The Xbox 360 S model uses a proprietary connector
-that can't be connected to a PC.
+This is Kinetris 1.0.0 Beta 4.
+
+Kinetris is a tetrominoes game (i.e.: a Tetris clone) with Natural Interaction
+using hand gestures. It was inspired by a music video on YouTube entitled
+"Complete History Of The Soviet Union, Arranged To The Melody Of Tetris".
+
+Copyright (C) 2011 Conan Chen.
+Contact: Conan Chen <http://conanchen.com/>
 
 ________________________________________________________________________________
 
 
+HOW TO INSTALL KINETRIS
 WINDOWS
 
 
@@ -37,19 +43,15 @@ Download PrimeSense NITE 1.4.2.4 Unstable SDK from
 (32-bit) v1.4.2.4 Development Edition" from <http://openni.org/>.)
 
 
-3. Install SensorKinect device driver
+3. Install OpenNI-compliant sensor device driver
 
-Download SensorKinect 0.7 from
-<http://conanchen.com/Kinetris/download/Windows/SensorKinect>. Run
-"SensorKinect-Win-OpenSource32-5.0.3.4" to install.
-
-(Alternatively, download "SensorKinect 0.7" from
-<http://github.com/avin2/SensorKinect/>.)
+Install the device driver for your sensor. Please consult your product manual,
+product support, or the Internet, for instructions.
 
 
-4. Test the Kinect
+4. Test the sensor
 
-Plug in the Kinect.
+Plug in the sensor.
 
 Open the Start menu, and try the NITE samples found in
 "All Programs\Prime Sense\NITE\Samples", to ensure that everything was installed
@@ -84,11 +86,12 @@ Slide your hand left and right to move the current tetromino. Swipe your hand up
 to hold the current tetromino for later. Swipe your hand down to drop the
 current tetromino. To rotate, first pull your hand back and make a circle, then
 continue making circles to rotate the current tetromino. The game will pause if
-you hide your hand from view (or if the Kinect loses track of it).
+you hide your hand from view (or if the sensor loses track of it).
 
 ________________________________________________________________________________
 
 
+HOW TO INSTALL KINETRIS
 MAC
 
 
@@ -102,6 +105,7 @@ code for Kinetris can be downloaded from
 ________________________________________________________________________________
 
 
+HOW TO INSTALL KINETRIS
 LINUX
 
 

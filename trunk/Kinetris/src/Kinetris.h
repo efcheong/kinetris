@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KINETRIS_H
-#define KINETRIS_H
+#ifndef KINETRIS_KINETRIS_H
+#define KINETRIS_KINETRIS_H
 
 #include <QtGui/QtGui>
 #include <QtOpenGL/QtOpenGL>
@@ -42,4 +42,4 @@ protected:
 	QGraphicsView* _view;
 };
 
-#endif // KINETRIS_H
+#endif // KINETRIS_KINETRIS_H

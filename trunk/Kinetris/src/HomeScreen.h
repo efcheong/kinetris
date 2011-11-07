@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HOMESCREEN_H
-#define HOMESCREEN_H
+#ifndef KINETRIS_HOMESCREEN_H
+#define KINETRIS_HOMESCREEN_H
 
 #include <QtGui/QtGui>
 
@@ -48,15 +48,15 @@ public:
 
 protected:
 
-	static const char _IMAGE_TITLE[];
+	static const char IMAGE_TITLE[];
 
-	static const qreal _BACKGROUND_W; // px
-	static const qreal _BACKGROUND_H; // px
+	static const qreal BACKGROUND_W; // px
+	static const qreal BACKGROUND_H; // px
 
-	static const qreal _SHOWEFFECT_DURATION; // sec
-	static const qreal _HIDEEFFECT_DURATION; // sec
+	static const qreal SHOWEFFECT_DURATION; // sec
+	static const qreal HIDEEFFECT_DURATION; // sec
 
-	static const qreal _GLOWEFFECT_DURATION; // sec
+	static const qreal GLOWEFFECT_DURATION; // sec
 
 	QGraphicsWidget* _sprite;
 	QGraphicsProxyWidget* _sprite_status;
@@ -76,4 +76,4 @@ protected:
 	void initEffect();
 };
 
-#endif // HOMESCREEN_H
+#endif // KINETRIS_HOMESCREEN_H

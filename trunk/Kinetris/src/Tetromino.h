@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TETROMINO_H
-#define TETROMINO_H
+#ifndef KINETRIS_TETROMINO_H
+#define KINETRIS_TETROMINO_H
 
 #include <QtCore/QtCore>
 
@@ -78,4 +78,4 @@ protected:
 	bool _locked;
 };
 
-#endif // TETROMINO_H
+#endif // KINETRIS_TETROMINO_H

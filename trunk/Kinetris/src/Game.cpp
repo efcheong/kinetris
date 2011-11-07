@@ -34,7 +34,7 @@
 #include "Tetromino.h"
 #include "Pair.h"
 
-const qreal Game::_UPDATE_INTERVAL = 1000.0f / 30.0f; // ms
+const qreal Game::UPDATE_INTERVAL = 1000.0f / 30.0f; // ms
 
 Game::Game(Kinetris* parent)
 	: QGraphicsScene(parent)
@@ -90,8 +90,8 @@ void Game::initSensor()
 	QObject::connect(_sensorThread, SIGNAL(evPush(qreal, qreal)), this, SLOT(onPush(qreal, qreal)));
 	QObject::connect(_sensorThread, SIGNAL(evWave()), this, SLOT(onWave()));
 
-	qRegisterMetaType<QPixmap>("QPixmap");
-	QObject::connect(_sensorThread, SIGNAL(evUsersMap(QPixmap)), this, SLOT(onUsersMap(QPixmap)));
+	qRegisterMetaType<QImage>("QImage");
+	QObject::connect(_sensorThread, SIGNAL(evUsersMap(QImage)), this, SLOT(onUsersMap(QImage)));
 }
 
 void Game::initLoader()
@@ -120,7 +120,7 @@ void Game::initState()
 void Game::initTimer()
 {
 	_t0 = QDateTime::currentMSecsSinceEpoch();
-	_timer = startTimer(_UPDATE_INTERVAL);
+	_timer = startTimer(UPDATE_INTERVAL);
 
 	qsrand(_t0);
 }
@@ -329,7 +329,7 @@ void Game::timerEvent(QTimerEvent* event)
 	if (event->timerId() == _timer)
 	{
 		qint64 t = QDateTime::currentMSecsSinceEpoch();
-		int dt = qMin<qreal>(_UPDATE_INTERVAL, t - _t0);
+		int dt = qMin<qreal>(UPDATE_INTERVAL, t - _t0);
 		update(dt);
 		_t0 = t;
 	}
@@ -757,7 +757,7 @@ void Game::onWave()
 	}
 }
 
-void Game::onUsersMap(QPixmap pixmap)
+void Game::onUsersMap(QImage image)
 {
 	if (!_state)
 	{
@@ -767,11 +767,11 @@ void Game::onUsersMap(QPixmap pixmap)
 	}
 	else if (_state == STATE_HOME)
 	{
-		_homeScreen->setAvatar(pixmap);
+		_homeScreen->setAvatar(QPixmap::fromImage(image));
 	}
 	else if (_state == STATE_PLAY)
 	{
-		_matrix->setAvatar(pixmap);
+		_matrix->setAvatar(QPixmap::fromImage(image));
 	}
 	else if (_state == STATE_MENU)
 	{

@@ -4,6 +4,29 @@
 ________________________________________________________________________________
 
 
+1.0.0 BETA 4
+Release date: 2011 Nov 07
+
+
+COMMON
+
+- Fixed threading-related issue with player mirror that was causing tearing on
+  Windows, and a crash on Linux.
+- Fixed scaling issue with graphics on Linux.
+
+
+SOURCE
+
+- Fixed incorrect letter-casing of paths in the "LIBS" qmake variable in Qt
+  project file.
+- Replaced inadvertant usage of Windows "min" and "max" macros with equivalent
+  min and max functions from Qt.
+- Renamed all variables that had all-uppercase names beginning with an
+  underscore character ("_"), to avoid conflicts with C++ reserved identifiers.
+
+________________________________________________________________________________
+
+
 1.0.0 BETA 3
 Release date: 2011 Oct 24
 

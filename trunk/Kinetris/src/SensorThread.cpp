@@ -20,9 +20,10 @@
 
 #include "SensorThread.h"
 
-const char SensorThread::_CONFIG[] = "OpenNI.xml";
+const char SensorThread::CONFIG[] = "OpenNI.xml";
 
-const qreal SensorThread::_UPDATE_INTERVAL = 1000.0f / 30.0f; // ms
+const XnDepthPixel SensorThread::DEPTH_MIN = 1000; // mm
+const XnDepthPixel SensorThread::DEPTH_MAX = 3000; // mm
 
 SensorThread::SensorThread(QObject* parent)
 	: QThread(parent)
@@ -281,7 +282,7 @@ void SensorThread::update()
 	{
 		emit evConnectBegin();
 
-		XnStatus result = _context->InitFromXmlFile(_CONFIG);
+		XnStatus result = _context->InitFromXmlFile(CONFIG);
 		if (result != XN_STATUS_OK)
 		{
 			emit evConnectError();
@@ -497,7 +498,7 @@ void SensorThread::onDepthMap()
 	QRgb* dst = reinterpret_cast<QRgb*>(_usersMap.bits());
 	for (int i = 0, il = _usersMap.width() * _usersMap.height(); i < il; ++i)
 	{
-		int n = 0xC0 * (1.0f - ((min(max(*src, 1000), 3000) - 1000) / static_cast<qreal>(3000 - 1000)));
+		int n = 0xC0 * (1.0f - ((qMin<XnDepthPixel>(qMax<XnDepthPixel>(*src, DEPTH_MIN), DEPTH_MAX) - DEPTH_MIN) / static_cast<qreal>(DEPTH_MAX - DEPTH_MIN)));
 
 		*dst = (*usr)
 			? qRgba(n, n, n, 0xFF)
@@ -508,7 +509,7 @@ void SensorThread::onDepthMap()
 		++dst;
 	}
 
-	emit evUsersMap(QPixmap::fromImage(_usersMap));
+	emit evUsersMap(_usersMap);
 }
 
 void SensorThread::onImageMap()
@@ -534,5 +535,5 @@ void SensorThread::onImageMap()
 		++dst;
 	}
 
-	emit evUsersMap(QPixmap::fromImage(_usersMap));
+	emit evUsersMap(_usersMap);
 }

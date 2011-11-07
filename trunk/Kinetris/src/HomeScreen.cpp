@@ -24,15 +24,15 @@
 
 #include "LoaderThread.h"
 
-const char HomeScreen::_IMAGE_TITLE[] = ":/res/title.png";
+const char HomeScreen::IMAGE_TITLE[] = ":/res/title.png";
 
-const qreal HomeScreen::_BACKGROUND_W = 1280.0f;
-const qreal HomeScreen::_BACKGROUND_H = 720.0f;
+const qreal HomeScreen::BACKGROUND_W = 1280.0f;
+const qreal HomeScreen::BACKGROUND_H = 720.0f;
 
-const qreal HomeScreen::_SHOWEFFECT_DURATION = 1.0f; // sec
-const qreal HomeScreen::_HIDEEFFECT_DURATION = 1.0f; // sec
+const qreal HomeScreen::SHOWEFFECT_DURATION = 1.0f; // sec
+const qreal HomeScreen::HIDEEFFECT_DURATION = 1.0f; // sec
 
-const qreal HomeScreen::_GLOWEFFECT_DURATION = 1.0f; // sec
+const qreal HomeScreen::GLOWEFFECT_DURATION = 1.0f; // sec
 
 HomeScreen::HomeScreen(Game* parent)
 	: QObject(parent)
@@ -62,10 +62,10 @@ void HomeScreen::initSprite()
 
 	item = new QGraphicsPixmapItem();
 	item->setParentItem(_sprite);
-	item->setPos((_BACKGROUND_W - (400.0f / 0.75f)) * 0.5f, _BACKGROUND_H - 400.0f);
+	item->setPos((BACKGROUND_W - (400.0f / 0.75f)) * 0.5f, BACKGROUND_H - 400.0f);
 	_avatar = static_cast<QGraphicsPixmapItem*>(item);
 
-	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(_IMAGE_TITLE));
+	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_TITLE));
 	item->setParentItem(_sprite);
 	item->setPos(232.0f, 128.0f);
 
@@ -99,8 +99,8 @@ void HomeScreen::initEffect()
 	effect->setStrength(0.0f);
 	_sprite->setGraphicsEffect(effect);
 
-	_showEffectTimer = new QTimeLine(_SHOWEFFECT_DURATION, this);
-	_hideEffectTimer = new QTimeLine(_HIDEEFFECT_DURATION, this);
+	_showEffectTimer = new QTimeLine(SHOWEFFECT_DURATION, this);
+	_hideEffectTimer = new QTimeLine(HIDEEFFECT_DURATION, this);
 
 	_glowTimer = 0.75f;
 }
@@ -158,9 +158,9 @@ void HomeScreen::update(qreal dt)
 	if (!((_status->text().isEmpty())
 		&& (_s1.isEmpty())))
 	{
-		qreal t0 = _glowTimer / (_GLOWEFFECT_DURATION * 1000.0f);
-		_glowTimer = fmod(_glowTimer + dt, _GLOWEFFECT_DURATION * 1000.0f);
-		qreal t = _glowTimer / (_GLOWEFFECT_DURATION * 1000.0f);
+		qreal t0 = _glowTimer / (GLOWEFFECT_DURATION * 1000.0f);
+		_glowTimer = fmod(_glowTimer + dt, GLOWEFFECT_DURATION * 1000.0f);
+		qreal t = _glowTimer / (GLOWEFFECT_DURATION * 1000.0f);
 
 		_sprite_status->setOpacity(0.375f * sin(t * 6.283185307179586476925286766559) + 0.625f);
 

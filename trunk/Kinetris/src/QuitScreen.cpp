@@ -24,8 +24,8 @@
 
 #include "LoaderThread.h"
 
-const qreal QuitScreen::_BACKGROUND_W = 1280.0f;
-const qreal QuitScreen::_BACKGROUND_H = 720.0f;
+const qreal QuitScreen::BACKGROUND_W = 1280.0f;
+const qreal QuitScreen::BACKGROUND_H = 720.0f;
 
 QuitScreen::QuitScreen(Game* parent)
 	: QObject(parent)
@@ -49,19 +49,19 @@ void QuitScreen::initSprite()
 	QGraphicsRectItem* rect;
 	QGraphicsSimpleTextItem* text;
 
-	rect = new QGraphicsRectItem(0.0f, 0.0f, _BACKGROUND_W, _BACKGROUND_H);
+	rect = new QGraphicsRectItem(0.0f, 0.0f, BACKGROUND_W, BACKGROUND_H);
 	rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x00, 0x00, 0xC0)));
 	rect->setParentItem(_sprite);
 
 	text = new QGraphicsSimpleTextItem(tr("Are you sure you want to quit?"));
 	text->setBrush(QColor::fromRgb(0xFF, 0xFF, 0xFF));
 	text->setParentItem(_sprite);
-	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 308.0f - 6.0f);
+	text->setPos((BACKGROUND_W - text->boundingRect().width()) * 0.5f, 308.0f - 6.0f);
 
 	text = new QGraphicsSimpleTextItem(tr("Swipe left: Yes.  Swipe right: No."));
 	text->setBrush(QColor::fromRgb(0xFF, 0xFF, 0xFF));
 	text->setParentItem(_sprite);
-	text->setPos((_BACKGROUND_W - text->boundingRect().width()) * 0.5f, 348.0f - 6.0f);
+	text->setPos((BACKGROUND_W - text->boundingRect().width()) * 0.5f, 348.0f - 6.0f);
 }
 
 QGraphicsWidget* QuitScreen::getSprite() const

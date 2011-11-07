@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef VISUALMATRIX_H
-#define VISUALMATRIX_H
+#ifndef KINETRIS_VISUALMATRIX_H
+#define KINETRIS_VISUALMATRIX_H
 
 #include <QtGui/QtGui>
 
@@ -62,31 +62,31 @@ public:
 
 protected:
 
-	static const char _IMAGE_FRAME_BG[];
-	static const char _IMAGE_FRAME_MG[];
-	static const char _IMAGE_FRAME_FG[];
-	static const char _IMAGE_LINES_PROGRESS[];
-	static const char _IMAGE_BLOCK[][32];
-	static const char _IMAGE_BLOCK_OTHER[];
-	static const char _IMAGE_BLOCK_GHOST[];
-	static const char _IMAGE_OVER[];
+	static const char IMAGE_FRAME_BG[];
+	static const char IMAGE_FRAME_MG[];
+	static const char IMAGE_FRAME_FG[];
+	static const char IMAGE_LINES_PROGRESS[];
+	static const char IMAGE_BLOCK[][32];
+	static const char IMAGE_BLOCK_OTHER[];
+	static const char IMAGE_BLOCK_GHOST[];
+	static const char IMAGE_OVER[];
 
-	static const char _IMAGE_FAIL[];
+	static const char IMAGE_FAIL[];
 
-	static const qreal _BLOCK_LARGE;
-	static const qreal _BLOCK_SMALL;
+	static const qreal BLOCK_LARGE;
+	static const qreal BLOCK_SMALL;
 
-	static const qreal _NEXTEFFECT_DURATION; // sec
-	static const qreal _LOCKEFFECT_DURATION; // sec
-	static const qreal _HOLDEFFECT_DURATION; // sec
-	static const qreal _OVEREFFECT_DURATION; // sec
+	static const qreal NEXTEFFECT_DURATION; // sec
+	static const qreal LOCKEFFECT_DURATION; // sec
+	static const qreal HOLDEFFECT_DURATION; // sec
+	static const qreal OVEREFFECT_DURATION; // sec
 
-	static const qreal _LINES_DELTA; // lines/sec
-	static const qreal _SCORE_DELTA; // score/sec
+	static const qreal LINES_DELTA; // lines/sec
+	static const qreal SCORE_DELTA; // score/sec
 
-	static const qreal _EXPLODEEFFECT_DURATION; // sec
-	static const qreal _EXPLODEEFFECT_DURATION_STAGGER; // sec
-	static const qreal _CRUMBLEEFFECT_DURATION; // sec
+	static const qreal EXPLODEEFFECT_DURATION; // sec
+	static const qreal EXPLODEEFFECT_DURATION_STAGGER; // sec
+	static const qreal CRUMBLEEFFECT_DURATION; // sec
 
 	State _state;
 	State _s1;
@@ -191,4 +191,4 @@ protected slots:
 	void onTopOut();
 };
 
-#endif // VISUALMATRIX_H
+#endif // KINETRIS_VISUALMATRIX_H

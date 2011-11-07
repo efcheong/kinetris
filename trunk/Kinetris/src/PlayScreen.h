@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYSCREEN_H
-#define PLAYSCREEN_H
+#ifndef KINETRIS_PLAYSCREEN_H
+#define KINETRIS_PLAYSCREEN_H
 
 #include <QtGui/QtGui>
 
@@ -46,8 +46,8 @@ public:
 
 protected:
 
-	static const qreal _BACKGROUND_W; // px
-	static const qreal _BACKGROUND_H; // px
+	static const qreal BACKGROUND_W; // px
+	static const qreal BACKGROUND_H; // px
 
 	QGraphicsWidget* _sprite;
 
@@ -58,4 +58,4 @@ protected:
 	void initEffect();
 };
 
-#endif // PLAYSCREEN_H
+#endif // KINETRIS_PLAYSCREEN_H

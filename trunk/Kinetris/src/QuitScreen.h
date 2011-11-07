@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QUITSCREEN_H
-#define QUITSCREEN_H
+#ifndef KINETRIS_QUITSCREEN_H
+#define KINETRIS_QUITSCREEN_H
 
 #include <QtGui/QtGui>
 
@@ -43,8 +43,8 @@ public:
 
 protected:
 
-	static const qreal _BACKGROUND_W; // px
-	static const qreal _BACKGROUND_H; // px
+	static const qreal BACKGROUND_W; // px
+	static const qreal BACKGROUND_H; // px
 
 	QGraphicsWidget* _sprite;
 
@@ -52,4 +52,4 @@ protected:
 	void initSprite();
 };
 
-#endif // QUITSCREEN_H
+#endif // KINETRIS_QUITSCREEN_H

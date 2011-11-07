@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BACKGROUND_H
-#define BACKGROUND_H
+#ifndef KINETRIS_BACKGROUND_H
+#define KINETRIS_BACKGROUND_H
 
 #include <QtGui/QtGui>
 
@@ -43,16 +43,16 @@ public:
 
 protected:
 
-	static const char _IMAGE_NOISE[];
-	static const char _IMAGE_FENCE[];
-	static const char _IMAGE_COVER_BG[];
-	static const char _IMAGE_COVER_FG[];
+	static const char IMAGE_NOISE[];
+	static const char IMAGE_FENCE[];
+	static const char IMAGE_COVER_BG[];
+	static const char IMAGE_COVER_FG[];
 
-	static const qreal _BACKGROUND_W; // px
-	static const qreal _BACKGROUND_H; // px
-	static const qreal _TEXTURE_W; // px
-	static const qreal _TEXTURE_H; // px
-	static const qreal _ROW_H; // px
+	static const qreal BACKGROUND_W; // px
+	static const qreal BACKGROUND_H; // px
+	static const qreal TEXTURE_W; // px
+	static const qreal TEXTURE_H; // px
+	static const qreal ROW_H; // px
 
 	QGraphicsWidget* _sprite;
 	QVector<QGraphicsWidget*> _sprite_bg;
@@ -65,4 +65,4 @@ protected:
 	void initEffect();
 };
 
-#endif BACKGROUND_H
+#endif KINETRIS_BACKGROUND_H

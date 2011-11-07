@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef KINETRIS_GAME_H
+#define KINETRIS_GAME_H
 
 #include <QtGui/QtGui>
 
@@ -61,7 +61,7 @@ public:
 
 protected:
 	
-	static const qreal _UPDATE_INTERVAL; // ms
+	static const qreal UPDATE_INTERVAL; // ms
 
 	qint64 _t0;
 	int _timer;
@@ -130,7 +130,7 @@ protected slots:
 	void onPush(qreal speed, qreal angle);
 	void onWave();
 
-	void onUsersMap(QPixmap pixmap);
+	void onUsersMap(QImage image);
 
 	void onLevel(int count);
 
@@ -138,4 +138,4 @@ protected slots:
 	void onQuit(bool force);
 };
 
-#endif // GAME_H
+#endif // KINETRIS_GAME_H

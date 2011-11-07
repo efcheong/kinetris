@@ -18,8 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef KINETRIS_PLAYER_H
+#define KINETRIS_PLAYER_H
 
 #include <QtGui/QtGui>
 
@@ -82,4 +82,4 @@ protected:
 	void onStateLeave(State state);
 };
 
-#endif // PLAYER_H
+#endif // KINETRIS_PLAYER_H
