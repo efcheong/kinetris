@@ -1,0 +1,78 @@
+                            CHANGE LOG FOR KINETRIS                             
+
+
+________________________________________________________________________________
+
+
+1.0.0 BETA 4
+Release date: 2011 Nov 07
+
+
+COMMON
+
+- Fixed threading-related issue with player mirror that was causing tearing on
+  Windows, and a crash on Linux.
+- Fixed scaling issue with graphics on Linux.
+
+
+SOURCE
+
+- Fixed incorrect letter-casing of paths in the "LIBS" qmake variable in Qt
+  project file.
+- Replaced inadvertant usage of Windows "min" and "max" macros with equivalent
+  min and max functions from Qt.
+- Renamed all variables that had all-uppercase names beginning with an
+  underscore character ("_"), to avoid conflicts with C++ reserved identifiers.
+
+________________________________________________________________________________
+
+
+1.0.0 BETA 3
+Release date: 2011 Oct 24
+
+
+COMMON
+
+- Added application icon for Windows and Mac.
+
+________________________________________________________________________________
+
+
+1.0.0 BETA 2
+Release date: 2011 Oct 19
+
+
+COMMON
+
+- Updated program to support OpenNI 1.3.2.3 Unstable and NITE 1.4.1.2 Unstable.
+- Replaced usage of trademarks with appropriate, generic terms.
+- Improved performance of player mirror.
+- Mirror will now use image from sensor's depth camera if sensor does not have a
+  video camera.
+- Changed program to run in full-screen mode.
+- Changed program to target 1280×720 screen resolution.
+- Added gesture-based control for quitting the program.
+
+
+SOURCE
+
+- Updated project to Microsoft Visual Studio 2010.
+- Renamed files and classes using the project's working name to use "Kinetris".
+- Removed unnecessary usage of singleton pattern.
+- Removed unnecessary usage of recursive mutexes.
+- Various minor corrections and improvements.
+
+________________________________________________________________________________
+
+
+1.0.0 BETA 1
+Release date: 2011 Mar 05
+
+
+COMMON
+
+- Initial release.
+
+________________________________________________________________________________
+
+
