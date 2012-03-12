@@ -10,37 +10,37 @@ MICROSOFT VISUAL STUDIO 2010
 
 1. Install OpenNI
 
-Download OpenNI 1.3.2.3 Unstable SDK from
+Download OpenNI 1.2.0.7 Unstable SDK from
 <http://conanchen.com/Kinetris/download/Windows/OpenNI>. Run
-"OpenNI-Win32-1.3.2.3-Dev.msi" to install.
+"OpenNI-Win32-1.2.0.7-Dev.msi" to install.
 
-(I chose to install to "C:\SDK\OpenNI\1.3\".)
+(I chose to install to "C:\SDK\OpenNI\1.2\".)
 
 (Alternatively, download "OpenNI Unstable Build for Windows x86 (32-bit)
-v1.3.2.3 Development Edition" from <http://openni.org/>.)
+v1.2.0.7 Development Edition" from <http://openni.org/>.)
 
 
 2. Install NITE
 
-Download PrimeSense NITE 1.4.2.4 Unstable SDK from
+Download PrimeSense NITE 1.3.1.6 Unstable SDK from
 <http://conanchen.com/Kinetris/download/Windows/NITE>. Run
-"NITE-Win32-1.4.1.2-Dev.msi" to install.
+"NITE-Win32-1.3.1.6-Dev.msi" to install.
 
-(I chose to install to "C:\SDK\NITE\1.4\".)
+(I chose to install to "C:\SDK\NITE\1.3\".)
 
 (Alternatively, download "PrimeSense NITE Unstable Build for Windows x86
-(32-bit) v1.4.2.4 Development Edition" from <http://openni.org/>.)
+(32-bit) v1.3.1.6 Development Edition" from <http://openni.org/>.)
 
 
-3. Install SensorKinect
+3. Install SensorKinect device driver
 
-Download SensorKinect 0.7 from
+Download SensorKinect 0.5 from
 <http://conanchen.com/Kinetris/download/Windows/SensorKinect>. Run
-"SensorKinect-Win-OpenSource32-5.0.3.4" to install.
+"SensorKinect-Win-OpenSource32-5.0.1.32.msi" to install.
 
 (I chose to install to the default location.)
 
-(Alternatively, download "SensorKinect 0.7" from
+(Alternatively, download "SensorKinect 0.5" from
 <http://github.com/avin2/SensorKinect/>.)
 
 

@@ -25,13 +25,13 @@ QT += core \
 
 # Windows
 win32 {
-	INCLUDEPATH += "C:/SDK/OpenNI/1.3/Include" \
-		"C:/SDK/NITE/1.4/Include"
+	INCLUDEPATH += "C:/SDK/OpenNI/1.2/Include" \
+		"C:/SDK/NITE/1.3/Include"
 
-	LIBS += -L"C:/SDK/OpenNI/1.3/Lib" \
+	LIBS += -L"C:/SDK/OpenNI/1.2/Lib" \
 		-l"openNI" \
-		-L"C:/SDK/NITE/1.4/Lib" \
-		-l"XnVNITE_1_4_1"
+		-L"C:/SDK/NITE/1.3/Lib" \
+		-l"XnVNITE_1_3_1"
 }
 # Mac
 macx {
@@ -41,7 +41,7 @@ macx {
 	LIBS += -L"/usr/lib" \
 		-l"OpenNI" \
 		-L"/usr/lib" \
-		-l"XnVNite_1_4_1"
+		-l"XnVNite_1_3_1"
 }
 # Linux
 unix:!macx {
@@ -51,7 +51,7 @@ unix:!macx {
 	LIBS += -L"/usr/lib" \
 		-l"OpenNI" \
 		-L"/usr/lib" \
-		-l"XnVNite_1_4_1"
+		-l"XnVNite_1_3_1"
 }
 
 HEADERS += "src/Pair.h" \

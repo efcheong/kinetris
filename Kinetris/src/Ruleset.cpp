@@ -308,6 +308,9 @@ Ruleset::~Ruleset()
 
 int Ruleset::getRotation(Piece piece, int rotation) const
 {
+	// Prevent "unreferenced formal parameter" warning
+	piece;
+
 	return rotation % SHAPE_TOTAL;
 }
 

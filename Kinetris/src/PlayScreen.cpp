@@ -89,5 +89,6 @@ void PlayScreen::hide()
 
 void PlayScreen::update(qreal dt)
 {
-	//
+	// Prevent "unreferenced formal parameter" warning
+	dt;
 }

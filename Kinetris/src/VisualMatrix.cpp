@@ -25,11 +25,13 @@
 
 #include "LoaderThread.h"
 
-const char VisualMatrix::IMAGE_FRAME_BG[] = ":/res/frame-bg.png";
-const char VisualMatrix::IMAGE_FRAME_MG[] = ":/res/frame-mg.png";
-const char VisualMatrix::IMAGE_FRAME_FG[] = ":/res/frame-fg.png";
-const char VisualMatrix::IMAGE_LINES_PROGRESS[] = ":/res/lines-progress.png";
-const char VisualMatrix::IMAGE_BLOCK[][32] = {
+const char* VisualMatrix::IMAGE_FRAME_BG = ":/res/frame-bg.png";
+const char* VisualMatrix::IMAGE_FRAME_MG = ":/res/frame-mg.png";
+const char* VisualMatrix::IMAGE_FRAME_FG = ":/res/frame-fg.png";
+const char* VisualMatrix::IMAGE_LINES_PROGRESS = ":/res/lines-progress.png";
+const char* VisualMatrix::IMAGE_FAIL = ":/res/fail.png";
+
+const char* VisualMatrix::IMAGE_BLOCK[] = {
 	":/res/block-i.png",
 	":/res/block-o.png",
 	":/res/block-t.png",
@@ -38,19 +40,26 @@ const char VisualMatrix::IMAGE_BLOCK[][32] = {
 	":/res/block-j.png",
 	":/res/block-l.png"
 };
-const char VisualMatrix::IMAGE_BLOCK_OTHER[] = ":/res/block-other.png";
-const char VisualMatrix::IMAGE_BLOCK_GHOST[] = ":/res/block-ghost.png";
-const char VisualMatrix::IMAGE_OVER[] = ":/res/over.png";
+const char* VisualMatrix::IMAGE_BLOCK_OTHER = ":/res/block-other.png";
+const char* VisualMatrix::IMAGE_BLOCK_GHOST = ":/res/block-ghost.png";
 
-const char VisualMatrix::IMAGE_FAIL[] = ":/res/fail.png";
+const char* VisualMatrix::IMAGE_COUNT[] = {
+	":/res/count-1.png",
+	":/res/count-2.png",
+	":/res/count-3.png",
+};
+const char* VisualMatrix::IMAGE_OVER = ":/res/over.png";
 
 const qreal VisualMatrix::BLOCK_LARGE = 24.0f;
 const qreal VisualMatrix::BLOCK_SMALL = 16.0f;
+
+const qreal VisualMatrix::COUNTDOWN_DURATION = 3.0f; // sec
 
 const qreal VisualMatrix::NEXTEFFECT_DURATION = 1.0f; // sec
 const qreal VisualMatrix::LOCKEFFECT_DURATION = 0.5f; // sec
 const qreal VisualMatrix::HOLDEFFECT_DURATION = 1.0f; // sec
 const qreal VisualMatrix::OVEREFFECT_DURATION = 1.5f; // sec
+const qreal VisualMatrix::HELPEFFECT_DURATION = 3.0f; // sec
 
 const qreal VisualMatrix::LINES_DELTA = 1.0f; // lines/sec
 const qreal VisualMatrix::SCORE_DELTA = 200.0f; // score/sec
@@ -89,227 +98,377 @@ void VisualMatrix::initSprite()
 	QGraphicsSimpleTextItem* text;
 	QGraphicsProxyWidget* proxy;
 	QLabel* label;
+	QFont font;
 
 	// Frame
-	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FRAME_BG));
-	item->setParentItem(_sprite);
-	item->setPos(0.0f, 0.0f);
+	{
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FRAME_BG));
+		item->setParentItem(_sprite);
+		item->setPos(0.0f, 0.0f);
+	}
 
 	// Frame
-	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FRAME_MG));
-	item->setParentItem(_sprite);
-	item->setPos(0.0f, 0.0f);
+	{
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FRAME_MG));
+		item->setParentItem(_sprite);
+		item->setPos(0.0f, 0.0f);
+	}
 
 	// Avatar
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
-	widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
-	widget->setParentItem(_sprite);
-	widget->setPos(170.0f, 50.0f);
-	item = new QGraphicsPixmapItem();
-	item->setParentItem(widget);
-	item->setPos(((BLOCK_LARGE * 10) - (320.0f / 0.75f)) * 0.5f, (BLOCK_LARGE * 20) - 320.0f);
-	_avatar = widget;
+	{
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
+		widget->setParentItem(_sprite);
+		widget->setPos(170.0f, 50.0f);
+		
+		item = new QGraphicsPixmapItem();
+		item->setParentItem(widget);
+		item->setPos(((BLOCK_LARGE * 10) - (320.0f / 0.75f)) * 0.5f, (BLOCK_LARGE * 20) - 320.0f);
+		
+		_avatar = widget;
+	}
+
+	// Help
+	{
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
+		widget->setParentItem(_sprite);
+		widget->setPos(170.0f, 50.0f);
+		
+		rect = new QGraphicsRectItem(0.0f, 0.0f, BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x00, 0x00, 0xC0)));
+		rect->setParentItem(widget);
+		
+		font = QApplication::font();
+		font.setFamily("Arial");
+		font.setPixelSize(16);
+		font.setWeight(QFont::Bold);
+		font.setStretch(80);
+		
+		text = new QGraphicsSimpleTextItem(tr("Slide left and right: Move."));
+		text->setBrush(QColor::fromRgb(0xC0, 0xC0, 0xC0));
+		text->setFont(font);
+		text->setParentItem(widget);
+		text->setPos(((BLOCK_LARGE * 10) - text->boundingRect().width()) * 0.5f, 217.0f - 6.0f);
+		
+		text = new QGraphicsSimpleTextItem(tr("Swipe up: Hold.  Swipe down: Drop."));
+		text->setBrush(QColor::fromRgb(0xC0, 0xC0, 0xC0));
+		text->setFont(font);
+		text->setParentItem(widget);
+		text->setPos(((BLOCK_LARGE * 10) - text->boundingRect().width()) * 0.5f, 237.0f - 6.0f);
+		
+		text = new QGraphicsSimpleTextItem(tr("Pull back, and make circles: Rotate."));
+		text->setBrush(QColor::fromRgb(0xC0, 0xC0, 0xC0));
+		text->setFont(font);
+		text->setParentItem(widget);
+		text->setPos(((BLOCK_LARGE * 10) - text->boundingRect().width()) * 0.5f, 257.0f - 6.0f);
+
+//		widget->setVisible(false);
+		
+		_sprite_help = widget;
+	}
 
 	// Lines
-	rect = new QGraphicsRectItem(120.0f - 1.0f, 220.0f - 1.0f, 8.0f + 2.0f, 144.0f + 2.0f);
-	rect->setBrush(QBrush(LoaderThread::instance()->getCachedPixmap(IMAGE_LINES_PROGRESS)));
-	rect->setParentItem(_sprite);
-	_sprite_lines = rect;
+	{
+		rect = new QGraphicsRectItem(120.0f - 1.0f, 220.0f - 1.0f, 8.0f + 2.0f, 144.0f + 2.0f);
+		rect->setBrush(QBrush(LoaderThread::instance()->getCachedPixmap(IMAGE_LINES_PROGRESS)));
+		rect->setParentItem(_sprite);
+
+		_sprite_lines = rect;
+	}
 
 	// Frame
-	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FRAME_FG));
-	item->setParentItem(_sprite);
-	item->setPos(0.0f, 0.0f);
+	{
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FRAME_FG));
+		item->setParentItem(_sprite);
+		item->setPos(0.0f, 0.0f);
+	}
 
 	// Field
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
-	widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
-	widget->setParentItem(_sprite);
-	widget->setPos(170.0f, 50.0f);
-	_sprite_field = widget;
+	{
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
+		widget->setParentItem(_sprite);
+		widget->setPos(170.0f, 50.0f);
+		
+		_sprite_field = widget;
 
-	_sprite_space.fill(NULL, _rows * _cols);
+		_sprite_space.fill(NULL, _rows * _cols);
+	}
 
 	// Ghost
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 4);
-	widget->setParentItem(_sprite_field);
-	widget->setPos(BLOCK_LARGE * getShapePositionInField(18, 3));
-	for (int i = 0; i < 4; ++i)
 	{
-		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_BLOCK_GHOST));
-		item->setParentItem(widget);
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 4);
+		widget->setParentItem(_sprite_field);
+		widget->setPos(BLOCK_LARGE * getShapePositionInField(18, 3));
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_BLOCK_GHOST));
+			item->setParentItem(widget);
+		}
+	
+		_sprite_ghost = widget;
 	}
-	_sprite_ghost = widget;
 
 	// Tetromino
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 4);
-	widget->setParentItem(_sprite_field);
-	widget->setPos(BLOCK_LARGE * getShapePositionInField(18, 3));
-	widget->setZValue(1.0f);
-	effect = new QGraphicsColorizeEffect(widget);
-	effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
-	effect->setStrength(0.0f);
-	widget->setGraphicsEffect(effect);
-	for (int i = 0; i < 4; ++i)
 	{
-		item = new QGraphicsPixmapItem();
-		item->setParentItem(widget);
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 4);
+		widget->setParentItem(_sprite_field);
+		widget->setPos(BLOCK_LARGE * getShapePositionInField(18, 3));
+		widget->setZValue(1.0f);
+		
+		effect = new QGraphicsColorizeEffect(widget);
+		effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
+		effect->setStrength(0.0f);
+		widget->setGraphicsEffect(effect);
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			item = new QGraphicsPixmapItem();
+			item->setParentItem(widget);
+		}
+		
+		_sprite_tetromino = widget;
 	}
-	_sprite_tetromino = widget;
 
 	// Hold
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
-	widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
-	widget->setParentItem(_sprite);
-	widget->setPos(56.0f, 108.0f + BLOCK_SMALL);
-	effect = new QGraphicsColorizeEffect(widget);
-	effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
-	effect->setStrength(0.0f);
-	widget->setGraphicsEffect(effect);
-	for (int i = 0; i < 4; ++i)
 	{
-		item = new QGraphicsPixmapItem();
-		item->setParentItem(widget);
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
+		widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
+		widget->setParentItem(_sprite);
+		widget->setPos(56.0f, 108.0f + BLOCK_SMALL);
+		
+		effect = new QGraphicsColorizeEffect(widget);
+		effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
+		effect->setStrength(0.0f);
+		widget->setGraphicsEffect(effect);
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			item = new QGraphicsPixmapItem();
+			item->setParentItem(widget);
+		}
+		
+		_sprite_hold = widget;
 	}
-	_sprite_hold = widget;
 
 	// Hold fail
-	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FAIL));
-	item->setScale(BLOCK_SMALL / BLOCK_LARGE);
-	item->setParentItem(_sprite);
-	item->setPos(56.0f + (BLOCK_SMALL * 3), 108.0f + (BLOCK_SMALL * 3));
-	item->setVisible(false);
-	_sprite_holdFail = item;
+	{
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_FAIL));
+		item->setScale(BLOCK_SMALL / BLOCK_LARGE);
+		item->setParentItem(_sprite);
+		item->setPos(56.0f + (BLOCK_SMALL * 3), 108.0f + (BLOCK_SMALL * 3));
+		item->setVisible(false);
+	
+		_sprite_holdFail = item;
+	}
 
 	// Next
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
-	widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
-	widget->setParentItem(_sprite);
-	widget->setPos(460.0f, 108.0f + BLOCK_SMALL);
-	effect = new QGraphicsColorizeEffect(widget);
-	effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
-	effect->setStrength(0.0f);
-	widget->setGraphicsEffect(effect);
-	for (int i = 0; i < 4; ++i)
 	{
-		item = new QGraphicsPixmapItem();
-		item->setParentItem(widget);
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
+		widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
+		widget->setParentItem(_sprite);
+		widget->setPos(460.0f, 108.0f + BLOCK_SMALL);
+		
+		effect = new QGraphicsColorizeEffect(widget);
+		effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
+		effect->setStrength(0.0f);
+		widget->setGraphicsEffect(effect);
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			item = new QGraphicsPixmapItem();
+			item->setParentItem(widget);
+		}
+	
+		_sprite_next << widget;
 	}
-	_sprite_next << widget;
 
 	// Next
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
-	widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
-	widget->setParentItem(_sprite);
-	widget->setPos(460.0f, 228.0f + BLOCK_SMALL);
-	effect = new QGraphicsColorizeEffect(widget);
-	effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
-	effect->setStrength(0.0f);
-	widget->setGraphicsEffect(effect);
-	for (int i = 0; i < 4; ++i)
 	{
-		item = new QGraphicsPixmapItem();
-		item->setParentItem(widget);
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
+		widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
+		widget->setParentItem(_sprite);
+		widget->setPos(460.0f, 228.0f + BLOCK_SMALL);
+		
+		effect = new QGraphicsColorizeEffect(widget);
+		effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
+		effect->setStrength(0.0f);
+		widget->setGraphicsEffect(effect);
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			item = new QGraphicsPixmapItem();
+			item->setParentItem(widget);
+		}
+	
+		_sprite_next << widget;
 	}
-	_sprite_next << widget;
 
 	// Next
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
-	widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
-	widget->setParentItem(_sprite);
-	widget->setPos(460.0f, 292.0f + BLOCK_SMALL);
-	effect = new QGraphicsColorizeEffect(widget);
-	effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
-	effect->setStrength(0.0f);
-	widget->setGraphicsEffect(effect);
-	for (int i = 0; i < 4; ++i)
 	{
-		item = new QGraphicsPixmapItem();
-		item->setParentItem(widget);
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 4, BLOCK_LARGE * 2);
+		widget->setScale(BLOCK_SMALL / BLOCK_LARGE);
+		widget->setParentItem(_sprite);
+		widget->setPos(460.0f, 292.0f + BLOCK_SMALL);
+		
+		effect = new QGraphicsColorizeEffect(widget);
+		effect->setColor(QColor::fromRgb(0xFF, 0xFF, 0xFF));
+		effect->setStrength(0.0f);
+		widget->setGraphicsEffect(effect);
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			item = new QGraphicsPixmapItem();
+			item->setParentItem(widget);
+		}
+		
+		_sprite_next << widget;
 	}
-	_sprite_next << widget;
 
 	// Font
-	QFont font = QApplication::font();
-	font.setCapitalization(QFont::AllUppercase);
+	{
+		font = QApplication::font();
+		font.setCapitalization(QFont::AllUppercase);
+	}
 
 	// Hold
-	text = new QGraphicsSimpleTextItem(tr("Hold"));
-	text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
-	text->setFont(font);
-	text->setParentItem(_sprite);
-	text->setPos(56.0f, 80.0f - 6.0f);
+	{
+		text = new QGraphicsSimpleTextItem(tr("Hold"));
+		text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
+		text->setFont(font);
+		text->setParentItem(_sprite);
+		text->setPos(56.0f, 80.0f - 6.0f);
+	}
 
 	// Next
-	text = new QGraphicsSimpleTextItem(tr("Next"));
-	text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
-	text->setFont(font);
-	text->setParentItem(_sprite);
-	text->setPos(526.0f - text->boundingRect().width(), 80.0f - 6.0f);
+	{
+		text = new QGraphicsSimpleTextItem(tr("Next"));
+		text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
+		text->setFont(font);
+		text->setParentItem(_sprite);
+		text->setPos(526.0f - text->boundingRect().width(), 80.0f - 6.0f);
+	}
 
 	// Level
-	text = new QGraphicsSimpleTextItem(tr("Level"));
-	text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
-	text->setFont(font);
-	text->setParentItem(_sprite);
-	text->setPos(56.0f, 316.0f - 6.0f);
+	{
+		text = new QGraphicsSimpleTextItem(tr("Level"));
+		text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
+		text->setFont(font);
+		text->setParentItem(_sprite);
+		text->setPos(56.0f, 316.0f - 6.0f);
+	}
 
 	// Level
-	label = new QLabel();
-	label->resize(48, 24);
-	label->setStyleSheet("background-color: transparent; color: #FFFFFF;");
-	label->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	proxy = new QGraphicsProxyWidget();
-	proxy->setParentItem(_sprite);
-	proxy->setWidget(label);
-	proxy->setPos(56.0f, 344.0f - 6.0f);
-	_sprite_level = label;
+	{
+		label = new QLabel();
+		label->resize(48, 24);
+		label->setStyleSheet("background-color: transparent; color: #FFFFFF;");
+		label->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+		
+		proxy = new QGraphicsProxyWidget();
+		proxy->setParentItem(_sprite);
+		proxy->setWidget(label);
+		proxy->setPos(56.0f, 344.0f - 6.0f);
+	
+		_sprite_level = label;
+	}
 
 	// Score
-	text = new QGraphicsSimpleTextItem(tr("Score"));
-	text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
-	text->setFont(font);
-	text->setParentItem(_sprite);
-	text->setPos(176.0f, 564.0f - 6.0f);
+	{
+		text = new QGraphicsSimpleTextItem(tr("Score"));
+		text->setBrush(QColor::fromRgb(0x00, 0x00, 0x00));
+		text->setFont(font);
+		text->setParentItem(_sprite);
+		text->setPos(176.0f, 564.0f - 6.0f);
+	}
 
 	// Score
-	label = new QLabel();
-	label->resize(148, 24);
-	label->setStyleSheet("background-color: transparent; color: #FFFFFF;");
-	label->setAlignment(Qt::AlignTop | Qt::AlignRight);
-	proxy = new QGraphicsProxyWidget();
-	proxy->setParentItem(_sprite);
-	proxy->setWidget(label);
-	proxy->setPos(256.0f, 564.0f - 6.0f);
-	_sprite_score = label;
+	{
+		label = new QLabel();
+		label->resize(148, 24);
+		label->setStyleSheet("background-color: transparent; color: #FFFFFF;");
+		label->setAlignment(Qt::AlignTop | Qt::AlignRight);
+		
+		proxy = new QGraphicsProxyWidget();
+		proxy->setParentItem(_sprite);
+		proxy->setWidget(label);
+		proxy->setPos(256.0f, 564.0f - 6.0f);
+		
+		_sprite_score = label;
+	}
+
+	// Countdown
+	{
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
+		widget->setParentItem(_sprite);
+		widget->setPos(170.0f, 50.0f);
+
+		rect = new QGraphicsRectItem(0.0f, 0.0f, BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x00, 0x00, 0xC0)));
+		rect->setParentItem(widget);
+
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_COUNT[0]));
+		item->setParentItem(widget);
+		item->setPos(77.0f, 197.0f);
+		item->setVisible(false);
+		_sprite_count << item;
+
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_COUNT[1]));
+		item->setParentItem(widget);
+		item->setPos(77.0f, 197.0f);
+		item->setVisible(false);
+		_sprite_count << item;
+
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_COUNT[2]));
+		item->setParentItem(widget);
+		item->setPos(77.0f, 197.0f);
+		item->setVisible(false);
+		_sprite_count << item;
+
+		widget->setVisible(false);
+		
+		_sprite_countdown = widget;
+	}
 
 	// Game over
-	widget = new QGraphicsWidget();
-	widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
-	widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
-	widget->setParentItem(_sprite);
-	widget->setPos(170.0f, 50.0f);
-	widget->setZValue(8.0f);
-	rect = new QGraphicsRectItem(0.0f, 0.0f, BLOCK_LARGE * 10, BLOCK_LARGE * 20);
-	rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x00, 0x00, 0xC0)));
-	rect->setParentItem(widget);
-	item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_OVER));
-	item->setParentItem(widget);
-	item->setPos(4.0f, 172.0f);
-	rect = new QGraphicsRectItem(0.0f, 0.0f, BLOCK_LARGE * 10, BLOCK_LARGE * 20);
-	rect->setBrush(QBrush(QColor::fromRgb(0xFF, 0xFF, 0xFF)));
-	rect->setParentItem(widget);
-	_sprite_overRect = rect;
-	widget->setVisible(false);
-	_sprite_over = widget;
+	{
+		widget = new QGraphicsWidget();
+		widget->resize(BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		widget->setFlags(QGraphicsItem::ItemClipsChildrenToShape);
+		widget->setParentItem(_sprite);
+		widget->setPos(170.0f, 50.0f);
+		widget->setZValue(8.0f);
+		
+		rect = new QGraphicsRectItem(0.0f, 0.0f, BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		rect->setBrush(QBrush(QColor::fromRgb(0x00, 0x00, 0x00, 0xC0)));
+		rect->setParentItem(widget);
+		
+		item = new QGraphicsPixmapItem(LoaderThread::instance()->getCachedPixmap(IMAGE_OVER));
+		item->setParentItem(widget);
+		item->setPos(4.0f, 172.0f);
+		
+		rect = new QGraphicsRectItem(0.0f, 0.0f, BLOCK_LARGE * 10, BLOCK_LARGE * 20);
+		rect->setBrush(QBrush(QColor::fromRgb(0xFF, 0xFF, 0xFF)));
+		rect->setParentItem(widget);
+		_sprite_overFlash = rect;
+		
+		widget->setVisible(false);
+		
+		_sprite_over = widget;
+	}
 }
 
 void VisualMatrix::initEffect()
@@ -321,6 +480,8 @@ void VisualMatrix::initEffect()
 	_lockEffectTimer = new QTimeLine(1, this);
 	_holdEffectTimer = new QTimeLine(1, this);
 	_overEffectTimer = new QTimeLine(1, this);
+	_helpEffectTimer = new QTimeLine(1, this);
+	_countdownTimer = new QTimeLine(1, this);
 
 	_linesSpinner = 0.0f;
 	_scoreSpinner = 0.0f;
@@ -363,6 +524,8 @@ void VisualMatrix::initMatrix()
 	QObject::connect(this, SIGNAL(evLevel(int)), this, SLOT(onLevel(int)));
 	QObject::connect(this, SIGNAL(evScore(int)), this, SLOT(onScore(int)));
 	QObject::connect(this, SIGNAL(evTopOut()), this, SLOT(onTopOut()));
+
+	QObject::connect(this, SIGNAL(evTetrominoLock(Tetromino*)), this, SLOT(onFirstLock(Tetromino*)));
 }
 
 void VisualMatrix::initStats()
@@ -437,13 +600,19 @@ void VisualMatrix::update(qreal dt)
 
 	if (!_state)
 	{
+//		setState(STATE_COUNTDOWN);
 		setState(STATE_PLAY);
+	}
+	else if (_state == STATE_COUNTDOWN)
+	{
+		updateCountdown(dt);
 	}
 	else if (_state == STATE_PLAY)
 	{
 		updateNextEffect(dt);
 		updateLandEffect(dt);
 		updateHoldEffect(dt);
+		updateHelpEffect(dt);
 		updateLines(dt);
 		updateScore(dt);
 
@@ -454,6 +623,7 @@ void VisualMatrix::update(qreal dt)
 		updateNextEffect(dt);
 		updateLandEffect(dt);
 		updateHoldEffect(dt);
+		updateHelpEffect(dt);
 		updateLines(dt);
 		updateScore(dt);
 		updateLockEffect(dt);
@@ -463,6 +633,7 @@ void VisualMatrix::update(qreal dt)
 		updateNextEffect(dt);
 		updateLandEffect(dt);
 		updateHoldEffect(dt);
+		updateHelpEffect(dt);
 		updateLines(dt);
 		updateScore(dt);
 		updateExplodeEffect(dt);
@@ -472,6 +643,7 @@ void VisualMatrix::update(qreal dt)
 		updateNextEffect(dt);
 		updateLandEffect(dt);
 		updateHoldEffect(dt);
+		updateHelpEffect(dt);
 		updateLines(dt);
 		updateScore(dt);
 		updateCrumbleEffect(dt);
@@ -595,108 +767,152 @@ void VisualMatrix::collapse(int start)
 	}
 }
 
+void VisualMatrix::updateCountdown(qreal dt)
+{
+	if (_countdownTimer->state() == QTimeLine::NotRunning)
+		return;
+
+	_countdownTimer->setCurrentTime(_countdownTimer->currentTime() + dt);
+	
+	int count = qCeil((_countdownTimer->duration() - _countdownTimer->currentTime()) / 1000.0f);
+	for (int i = 0, il = _sprite_count.size(); i < il; ++i)
+	{
+		_sprite_count[i]->setVisible((i + 1 == count));
+	}
+
+	if (_countdownTimer->currentTime() >= _countdownTimer->duration())
+	{
+		_countdownTimer->stop();
+
+		_sprite_countdown->setVisible(false);
+
+		setState(STATE_PLAY);
+	}
+}
+
 void VisualMatrix::updateNextEffect(qreal dt)
 {
 	for (int i = 0, il = _nextEffectTimer.count(); i < il; ++i)
 	{
-		if (_nextEffectTimer[i]->state() != QTimeLine::NotRunning)
-		{
-			_nextEffectTimer[i]->setCurrentTime(_nextEffectTimer[i]->currentTime() + dt);
-			
-			dynamic_cast<QGraphicsColorizeEffect*>(_sprite_next[i]->graphicsEffect())->setStrength(1.0f - _nextEffectTimer[i]->currentValue());
+		if (_nextEffectTimer[i]->state() == QTimeLine::NotRunning)
+			continue;
 
-			if (_nextEffectTimer[i]->currentTime() >= _nextEffectTimer[i]->duration())
-				_nextEffectTimer[i]->stop();
-		}
+		_nextEffectTimer[i]->setCurrentTime(_nextEffectTimer[i]->currentTime() + dt);
+			
+		static_cast<QGraphicsColorizeEffect*>(_sprite_next[i]->graphicsEffect())->setStrength(1.0f - _nextEffectTimer[i]->currentValue());
+
+		if (_nextEffectTimer[i]->currentTime() >= _nextEffectTimer[i]->duration())
+			_nextEffectTimer[i]->stop();
 	}
 }
 
 void VisualMatrix::updateLandEffect(qreal dt)
 {
-	if (_landEffectTimer->state() != QTimeLine::NotRunning)
-	{
-		if (Matrix::_state == Matrix::STATE_LAND)
-		{
-			_landEffectTimer->setCurrentTime(_lockTimer);
+	// Prevent "unreferenced formal parameter" warning
+	dt;
 
-			if (_landEffectTimer->currentTime() >= _landEffectTimer->duration())
-			{
-				_landEffectTimer->stop();
-				_landEffectTimer->setCurrentTime(0);
-			}
-			
-			dynamic_cast<QGraphicsColorizeEffect*>(_sprite_tetromino->graphicsEffect())->setStrength(_landEffectTimer->currentValue());
-		}
+	if (_landEffectTimer->state() == QTimeLine::NotRunning)
+		return;
+
+	if (Matrix::_state != Matrix::STATE_LAND)
+		return;
+
+	_landEffectTimer->setCurrentTime(_lockTimer);
+
+	if (_landEffectTimer->currentTime() >= _landEffectTimer->duration())
+	{
+		_landEffectTimer->stop();
+		_landEffectTimer->setCurrentTime(0);
 	}
+			
+	static_cast<QGraphicsColorizeEffect*>(_sprite_tetromino->graphicsEffect())->setStrength(_landEffectTimer->currentValue());
 }
 
 void VisualMatrix::updateLockEffect(qreal dt)
 {
-	if (_lockEffectTimer->state() != QTimeLine::NotRunning)
-	{
-		_lockEffectTimer->setCurrentTime(_lockEffectTimer->currentTime() + dt);
+	if (_lockEffectTimer->state() == QTimeLine::NotRunning)
+		return;
+
+	_lockEffectTimer->setCurrentTime(_lockEffectTimer->currentTime() + dt);
 		
-		dynamic_cast<QGraphicsColorizeEffect*>(_sprite_tetromino->graphicsEffect())->setStrength(1.0f - _lockEffectTimer->currentValue());
+	static_cast<QGraphicsColorizeEffect*>(_sprite_tetromino->graphicsEffect())->setStrength(1.0f - _lockEffectTimer->currentValue());
 
-		if (_lockEffectTimer->currentTime() >= _lockEffectTimer->duration())
-		{
-			_lockEffectTimer->stop();
+	if (_lockEffectTimer->currentTime() >= _lockEffectTimer->duration())
+	{
+		_lockEffectTimer->stop();
 
-			_sprite_tetromino->setVisible(false);
-			_sprite_ghost->setVisible(false);
-			setState(STATE_PLAY);
-		}
+		_sprite_tetromino->setVisible(false);
+		_sprite_ghost->setVisible(false);
+
+		setState(STATE_PLAY);
 	}
 }
 
 void VisualMatrix::updateHoldEffect(qreal dt)
 {
-	if (_holdEffectTimer->state() != QTimeLine::NotRunning)
-	{
-		_holdEffectTimer->setCurrentTime(_holdEffectTimer->currentTime() + dt);
-		
-		dynamic_cast<QGraphicsColorizeEffect*>(_sprite_hold->graphicsEffect())->setStrength(1.0f - _holdEffectTimer->currentValue());
+	if (_holdEffectTimer->state() == QTimeLine::NotRunning)
+		return;
 
-		if (_holdEffectTimer->currentTime() >= _holdEffectTimer->duration())
-			_holdEffectTimer->stop();
-	}
+	_holdEffectTimer->setCurrentTime(_holdEffectTimer->currentTime() + dt);
+		
+	static_cast<QGraphicsColorizeEffect*>(_sprite_hold->graphicsEffect())->setStrength(1.0f - _holdEffectTimer->currentValue());
+
+	if (_holdEffectTimer->currentTime() >= _holdEffectTimer->duration())
+		_holdEffectTimer->stop();
 }
 
 void VisualMatrix::updateOverEffect(qreal dt)
 {
-	if (_overEffectTimer->state() != QTimeLine::NotRunning)
-	{
-		_overEffectTimer->setCurrentTime(_overEffectTimer->currentTime() + dt);
-		
-		_sprite_overRect->setOpacity(1.0f - _overEffectTimer->currentValue());
+	if (_overEffectTimer->state() == QTimeLine::NotRunning)
+		return;
 
-		if (_overEffectTimer->currentTime() >= _overEffectTimer->duration())
-			_overEffectTimer->stop();
+	_overEffectTimer->setCurrentTime(_overEffectTimer->currentTime() + dt);
+		
+	_sprite_overFlash->setOpacity(1.0f - _overEffectTimer->currentValue());
+
+	if (_overEffectTimer->currentTime() >= _overEffectTimer->duration())
+		_overEffectTimer->stop();
+}
+
+void VisualMatrix::updateHelpEffect(qreal dt)
+{
+	if (_helpEffectTimer->state() == QTimeLine::NotRunning)
+		return;
+
+	_helpEffectTimer->setCurrentTime(_helpEffectTimer->currentTime() + dt);
+
+	_sprite_help->setOpacity(1.0f - _helpEffectTimer->currentValue());
+
+	if (_helpEffectTimer->currentTime() >= _helpEffectTimer->duration())
+	{
+		_helpEffectTimer->stop();
+
+		_sprite_help->setVisible(false);
 	}
 }
 
 void VisualMatrix::updateLines(qreal dt)
 {
-	if (_lines != _linesSpinner)
-	{
-		qreal min = qMin(qAbs(_lines - _linesSpinner), (LINES_DELTA * 0.001f) * dt);
-		int dir = (_lines < _linesSpinner) ? -1 : 1;
+	if (_lines == _linesSpinner)
+		return;
+
+	qreal min = qMin(qAbs(_lines - _linesSpinner), (LINES_DELTA * 0.001f) * dt);
+	int dir = (_lines < _linesSpinner) ? -1 : 1;
 		
-		_linesSpinner += dir * min;
-		setLines();
-	}
+	_linesSpinner += dir * min;
+	setLines();
 }
 
 void VisualMatrix::updateScore(qreal dt)
 {
-	if (_score != _scoreSpinner)
-	{
-		qreal min = qMin(qAbs(_score - _scoreSpinner), (SCORE_DELTA * 0.001f) * dt);
-		int dir = (_score < _scoreSpinner) ? -1 : 1;
+	if (_score == _scoreSpinner)
+		return;
+
+	qreal min = qMin(qAbs(_score - _scoreSpinner), (SCORE_DELTA * 0.001f) * dt);
+	int dir = (_score < _scoreSpinner) ? -1 : 1;
 		
-		_scoreSpinner += dir * min;
-		setScore();
-	}
+	_scoreSpinner += dir * min;
+	setScore();
 }
 
 void VisualMatrix::updateExplodeEffect(qreal dt)
@@ -897,6 +1113,14 @@ void VisualMatrix::onStateEnter(State state)
 	if (!state)
 	{
 	}
+	else if (state == STATE_COUNTDOWN)
+	{
+		_sprite_countdown->setVisible(true);
+
+		_countdownTimer->setDuration(COUNTDOWN_DURATION * 1000.0f);
+		_countdownTimer->start();
+		_countdownTimer->setPaused(true);
+	}
 	else if (state == STATE_PLAY)
 	{
 	}
@@ -913,7 +1137,7 @@ void VisualMatrix::onStateEnter(State state)
 	}
 	else if (state == STATE_OVER)
 	{
-		_sprite_over->show();
+		_sprite_over->setVisible(true);
 
 		_overEffectTimer->setCurveShape(QTimeLine::EaseInCurve);
 		_overEffectTimer->setDuration(OVEREFFECT_DURATION * 1000.0f);
@@ -926,6 +1150,10 @@ void VisualMatrix::onStateLeave(State state)
 {
 	if (!state)
 	{
+	}
+	else if (state == STATE_COUNTDOWN)
+	{
+//		_sprite_help->setVisible(true);
 	}
 	else if (state == STATE_PLAY)
 	{
@@ -955,7 +1183,7 @@ void VisualMatrix::onTetromino(Tetromino* tetromino)
 	QList<QGraphicsItem*> g = _sprite_tetromino->childItems();
 	for (int i = 0, il = shape.count(); i < il; ++i)
 	{
-		dynamic_cast<QGraphicsPixmapItem*>(g[i])
+		static_cast<QGraphicsPixmapItem*>(g[i])
 			->setPixmap(LoaderThread::instance()->getCachedPixmap(IMAGE_BLOCK[piece - 1]));
 		g[i]->setPos(BLOCK_LARGE * getBlockPositionInShape(shape[i]));
 	}
@@ -966,6 +1194,9 @@ void VisualMatrix::onTetromino(Tetromino* tetromino)
 
 void VisualMatrix::onTetrominoNext(Tetromino* tetromino)
 {
+	// Prevent "unreferenced formal parameter" warning
+	tetromino;
+
 	QQueue<Ruleset::Piece> piece = _next;
 	QVector<Pair> shape;
 	for (int i = 0, il = _sprite_next.count(); i < il; ++i)
@@ -975,7 +1206,7 @@ void VisualMatrix::onTetrominoNext(Tetromino* tetromino)
 		QList<QGraphicsItem*> g = _sprite_next[i]->childItems();
 		for (int j = 0, jl = shape.count(); j < jl; ++j)
 		{
-			dynamic_cast<QGraphicsPixmapItem*>(g[j])
+			static_cast<QGraphicsPixmapItem*>(g[j])
 				->setPixmap(LoaderThread::instance()->getCachedPixmap(IMAGE_BLOCK[piece[i] - 1]));
 			g[j]->setPos(BLOCK_LARGE * getBlockPositionInShape(shape[j]));
 		}
@@ -989,19 +1220,29 @@ void VisualMatrix::onTetrominoNext(Tetromino* tetromino)
 
 void VisualMatrix::onTetrominoCast(Tetromino* tetromino)
 {
+	// Prevent "unreferenced formal parameter" warning
+	tetromino;
 }
 
 void VisualMatrix::onTetrominoMove(Tetromino* tetromino, int count)
 {
+	// Prevent "unreferenced formal parameter" warning
+	count;
+
 	_sprite_tetromino->setPos(BLOCK_LARGE * getShapePositionInField(tetromino->getPosition()));
 }
 
 void VisualMatrix::onTetrominoMoveFail(Tetromino* tetromino)
 {
+	// Prevent "unreferenced formal parameter" warning
+	tetromino;
 }
 
 void VisualMatrix::onTetrominoTurn(Tetromino* tetromino, int count)
 {
+	// Prevent "unreferenced formal parameter" warning
+	count;
+
 	QVector<Pair> shape = tetromino->getShape();
 	Pair position = tetromino->getPosition();
 
@@ -1016,20 +1257,31 @@ void VisualMatrix::onTetrominoTurn(Tetromino* tetromino, int count)
 
 void VisualMatrix::onTetrominoTurnFail(Tetromino* tetromino)
 {
+	// Prevent "unreferenced formal parameter" warning
+	tetromino;
 }
 
 void VisualMatrix::onTetrominoFall(Tetromino* tetromino, int count)
 {
+	// Prevent "unreferenced formal parameter" warning
+	count;
+
 	_sprite_tetromino->setPos(BLOCK_LARGE * getShapePositionInField(tetromino->getPosition()));
 }
 
 void VisualMatrix::onTetrominoDrop(Tetromino* tetromino, int count)
 {
+	// Prevent "unreferenced formal parameter" warning
+	count;
+
 	_sprite_tetromino->setPos(BLOCK_LARGE * getShapePositionInField(tetromino->getPosition()));
 }
 
 void VisualMatrix::onTetrominoLand(Tetromino* tetromino)
 {
+	// Prevent "unreferenced formal parameter" warning
+	tetromino;
+
 	_landEffectTimer->setCurveShape(QTimeLine::EaseOutCurve);
 	_landEffectTimer->setDuration(_rules->getDelayBeforeLock() * 1000.0f);
 	_landEffectTimer->start();
@@ -1072,12 +1324,12 @@ void VisualMatrix::onTetrominoHold(Tetromino* tetromino)
 {
 	Ruleset::Piece piece = tetromino->getPiece();
 	QVector<Pair> shape = _rules->getRotationShape(piece, 0);
-	Pair position = tetromino->getPosition();
+//	Pair position = tetromino->getPosition();
 
 	QList<QGraphicsItem*> g = _sprite_hold->childItems();
 	for (int i = 0, il = shape.count(); i < il; ++i)
 	{
-		dynamic_cast<QGraphicsPixmapItem*>(g[i])
+		static_cast<QGraphicsPixmapItem*>(g[i])
 			->setPixmap(LoaderThread::instance()->getCachedPixmap(IMAGE_BLOCK[piece - 1]));
 		g[i]->setPos(BLOCK_LARGE * getBlockPositionInShape(shape[i]));
 	}
@@ -1093,12 +1345,14 @@ void VisualMatrix::onTetrominoHold(Tetromino* tetromino)
 	{
 		_landEffectTimer->stop();
 		_landEffectTimer->setCurrentTime(0);
-		dynamic_cast<QGraphicsColorizeEffect*>(_sprite_tetromino->graphicsEffect())->setStrength(_landEffectTimer->currentValue());
+		static_cast<QGraphicsColorizeEffect*>(_sprite_tetromino->graphicsEffect())->setStrength(_landEffectTimer->currentValue());
 	}
 }
 
 void VisualMatrix::onTetrominoHoldFail(Tetromino* tetromino)
 {
+	// Prevent "unreferenced formal parameter" warning
+	tetromino;
 }
 
 void VisualMatrix::onGhost(Tetromino* ghost)
@@ -1144,13 +1398,30 @@ void VisualMatrix::onLines(QVector<bool> which)
 
 void VisualMatrix::onLevel(int count)
 {
+	// Prevent "unreferenced formal parameter" warning
+	count;
 }
 
 void VisualMatrix::onScore(int count)
 {
+	// Prevent "unreferenced formal parameter" warning
+	count;
 }
 
 void VisualMatrix::onTopOut()
 {
 	setState(STATE_OVER);
+}
+
+void VisualMatrix::onFirstLock(Tetromino* tetromino)
+{
+	// Prevent "unreferenced formal parameter" warning
+	tetromino;
+
+	QObject::disconnect(this, SIGNAL(evTetrominoLock(Tetromino*)), this, SLOT(onFirstLock(Tetromino*)));
+
+	_helpEffectTimer->setCurveShape(QTimeLine::EaseInCurve);
+	_helpEffectTimer->setDuration(HELPEFFECT_DURATION * 1000.0f);
+	_helpEffectTimer->start();
+	_helpEffectTimer->setPaused(true);
 }

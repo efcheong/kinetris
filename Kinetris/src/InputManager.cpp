@@ -72,6 +72,9 @@ bool InputManager::getCleared(Input which) const
 
 void InputManager::update(qreal dt)
 {
+	// Prevent "unreferenced formal parameter" warning
+	dt;
+
 	_s0 = _state;
 	_state = _s1;
 	

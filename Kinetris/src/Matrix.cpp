@@ -570,6 +570,8 @@ void Matrix::onStateEnter(State state)
 
 void Matrix::onStateLeave(State state)
 {
+	// Prevent "unreferenced formal parameter" warning
+	state;
 }
 
 void Matrix::onMove(int count)

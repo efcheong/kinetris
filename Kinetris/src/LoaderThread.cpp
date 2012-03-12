@@ -134,8 +134,12 @@ void LoaderThread::run()
 
 void LoaderThread::onStateEnter(State state)
 {
+	// Prevent "unreferenced formal parameter" warning
+	state;
 }
 
 void LoaderThread::onStateLeave(State state)
 {
+	// Prevent "unreferenced formal parameter" warning
+	state;
 }

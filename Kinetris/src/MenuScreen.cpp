@@ -134,4 +134,6 @@ void MenuScreen::hide()
 
 void MenuScreen::update(qreal dt)
 {
+	// Prevent "unreferenced formal parameter" warning
+	dt;
 }
