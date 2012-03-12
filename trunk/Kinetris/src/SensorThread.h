@@ -79,7 +79,7 @@ public:
 
 protected:
 
-	static const char CONFIG[];
+	static const char* CONFIG;
 
 	static const XnDepthPixel DEPTH_MIN;
 	static const XnDepthPixel DEPTH_MAX;

@@ -20,7 +20,7 @@
 
 #include "SensorThread.h"
 
-const char SensorThread::CONFIG[] = "OpenNI.xml";
+const char* SensorThread::CONFIG = "./OpenNI.xml";
 
 const XnDepthPixel SensorThread::DEPTH_MIN = 1000; // mm
 const XnDepthPixel SensorThread::DEPTH_MAX = 3000; // mm
@@ -282,7 +282,8 @@ void SensorThread::update()
 	{
 		emit evConnectBegin();
 
-		XnStatus result = _context->InitFromXmlFile(CONFIG);
+		xn::ScriptNode scriptNode;
+		XnStatus result = _context->InitFromXmlFile(CONFIG, scriptNode);
 		if (result != XN_STATUS_OK)
 		{
 			emit evConnectError();
@@ -324,24 +325,39 @@ void SensorThread::update()
 
 void SensorThread::onStateEnter(State state)
 {
+	// Prevent "unreferenced formal parameter" warning
+	state;
 }
 
 void SensorThread::onStateLeave(State state)
 {
+	// Prevent "unreferenced formal parameter" warning
+	state;
 }
 
 void XN_CALLBACK_TYPE SensorThread::onNewUser(xn::UserGenerator& generator, XnUserID user, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	generator;
+	user;
+
 	emit static_cast<SensorThread*>(self)->evUserEnter();
 }
 
 void XN_CALLBACK_TYPE SensorThread::onLostUser(xn::UserGenerator& generator, XnUserID user, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	generator;
+	user;
+
 	emit static_cast<SensorThread*>(self)->evUserLeave();
 }
 
 void XN_CALLBACK_TYPE SensorThread::onSessionStart(const XnPoint3D& position, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	position;
+
 	emit static_cast<SensorThread*>(self)->evSessionBegin();
 }
 
@@ -352,21 +368,36 @@ void XN_CALLBACK_TYPE SensorThread::onSessionEnd(void* self)
 
 void XN_CALLBACK_TYPE SensorThread::onPrimaryPointCreate(const XnVHandPointContext* hand, const XnPoint3D& position, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	hand;
+	position;
+
 	emit static_cast<SensorThread*>(self)->evFocusGain();
 }
 
 void XN_CALLBACK_TYPE SensorThread::onPrimaryPointDestroy(XnUInt32 id, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	id;
+
 	emit static_cast<SensorThread*>(self)->evFocusLose();
 }
 
 void XN_CALLBACK_TYPE SensorThread::onPrimaryPointReplace(XnUInt32 id, const XnVHandPointContext* hand, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	id;
+	hand;
+
 	emit static_cast<SensorThread*>(self)->evFocusSwap();
 }
 
 void XN_CALLBACK_TYPE SensorThread::onSteady(XnUInt32 id, XnFloat standardDeviation, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	id;
+	standardDeviation;
+
 	static_cast<SensorThread*>(self)->_circleDetector->Reset();
 
 	emit static_cast<SensorThread*>(self)->evSteadyBegin();
@@ -374,11 +405,19 @@ void XN_CALLBACK_TYPE SensorThread::onSteady(XnUInt32 id, XnFloat standardDeviat
 
 void XN_CALLBACK_TYPE SensorThread::onNotSteady(XnUInt32 id, XnFloat standardDeviation, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	id;
+	standardDeviation;
+
 	emit static_cast<SensorThread*>(self)->evSteadyEnd();
 }
 
 void XN_CALLBACK_TYPE SensorThread::onCircle(XnFloat count, XnBool confidence, const XnVCircle* circle, void* self)
 {
+	// Prevent "unreferenced formal parameter" warning
+	confidence;
+	circle;
+
 	int& _c0 = static_cast<SensorThread*>(self)->_c0;
 
 	if (!count)

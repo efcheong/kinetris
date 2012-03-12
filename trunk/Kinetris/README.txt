@@ -7,7 +7,7 @@ ________________________________________________________________________________
 ABOUT KINETRIS
 
 
-This is Kinetris 1.0.0 Beta 4.
+This is Kinetris 1.0.0 Beta 5.
 
 Kinetris is a tetrominoes game (i.e.: a Tetris clone) with Natural Interaction
 using hand gestures. It was inspired by a music video on YouTube entitled
@@ -25,22 +25,22 @@ WINDOWS
 
 1. Install OpenNI
 
-Download OpenNI 1.3.2.3 Unstable SDK from
+Download OpenNI 1.2.0.7 Unstable SDK from
 <http://conanchen.com/Kinetris/download/Windows/OpenNI>. Run
-"OpenNI-Win32-1.3.2.3-Dev.msi" to install.
+"OpenNI-Win32-1.2.0.7-Dev.msi" to install.
 
 (Alternatively, download "OpenNI Unstable Build for Windows x86 (32-bit)
-v1.3.2.3 Development Edition" from <http://openni.org/>.)
+v1.2.0.7 Development Edition" from <http://openni.org/>.)
 
 
 2. Install NITE
 
-Download PrimeSense NITE 1.4.2.4 Unstable SDK from
+Download PrimeSense NITE 1.3.1.6 Unstable SDK from
 <http://conanchen.com/Kinetris/download/Windows/NITE>. Run
-"NITE-Win32-1.4.1.2-Dev.msi" to install.
+"NITE-Win32-1.3.1.6-Dev.msi" to install.
 
 (Alternatively, download "PrimeSense NITE Unstable Build for Windows x86
-(32-bit) v1.4.2.4 Development Edition" from <http://openni.org/>.)
+(32-bit) v1.3.1.6 Development Edition" from <http://openni.org/>.)
 
 
 3. Install OpenNI-compliant sensor device driver
@@ -73,7 +73,7 @@ Download Microsoft Visual C++ 2010 Redistributable Package from
 
 6. Install Kinetris
 
-Download Kinetris 1.0.0 Beta 4 from
+Download Kinetris 1.0.0 Beta 5 from
 <http://conanchen.com/Kinetris/download/Windows>. Unpack the archive to a folder
 of your choice.
 

@@ -81,4 +81,6 @@ void QuitScreen::hide()
 
 void QuitScreen::update(qreal dt)
 {
+	// Prevent "unreferenced formal parameter" warning
+	dt;
 }

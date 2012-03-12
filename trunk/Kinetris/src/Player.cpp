@@ -96,7 +96,7 @@ void Player::update(qreal dt)
 
 	qreal X2 = _inputManager->getState(InputManager::INPUT_X2);
 	qreal Y2 = _inputManager->getState(InputManager::INPUT_Y2);
-	qreal Z2 = _inputManager->getState(InputManager::INPUT_Z2);
+//	qreal Z2 = _inputManager->getState(InputManager::INPUT_Z2);
 
 	qreal L1 = _inputManager->getState(InputManager::INPUT_L1);
 	qreal R1 = _inputManager->getState(InputManager::INPUT_R1);
@@ -233,4 +233,6 @@ void Player::onStateEnter(State state)
 
 void Player::onStateLeave(State state)
 {
+	// Prevent "unreferenced formal parameter" warning
+	state;
 }

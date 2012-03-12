@@ -362,7 +362,7 @@ void Game::keyPressEvent(QKeyEvent* event)
 		{
 			_inputManager->setState(InputManager::INPUT_PLAY, 1.0f, true);
 
-			if (dynamic_cast<Matrix*>(_matrix)->getState() == Matrix::STATE_OVER)
+			if (static_cast<Matrix*>(_matrix)->getState() == Matrix::STATE_OVER)
 				setState(STATE_HOME);
 			else
 				setState(STATE_MENU);
@@ -714,16 +714,28 @@ void Game::onSlideZ(qreal direction)
 
 void Game::onSwipeX(int direction, qreal speed, qreal angle)
 {
+	// Prevent "unreferenced formal parameter" warning
+	speed;
+	angle;
+
 	_inputManager->setState(InputManager::INPUT_X2, direction, true);
 }
 
 void Game::onSwipeY(int direction, qreal speed, qreal angle)
 {
+	// Prevent "unreferenced formal parameter" warning
+	speed;
+	angle;
+
 	_inputManager->setState(InputManager::INPUT_Y2, direction, true);
 }
 
 void Game::onPush(qreal speed, qreal angle)
 {
+	// Prevent "unreferenced formal parameter" warning
+	speed;
+	angle;
+
 	_inputManager->setState(InputManager::INPUT_Z2, 1.0f, true);
 }
 
@@ -783,6 +795,9 @@ void Game::onUsersMap(QImage image)
 
 void Game::onLevel(int count)
 {
+	// Prevent "unreferenced formal parameter" warning
+	count;
+
 	_background->setSpeed(_matrix->getRules()->getSpeed(_matrix->getLevel()));
 }
 

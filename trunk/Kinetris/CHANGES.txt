@@ -4,6 +4,26 @@
 ________________________________________________________________________________
 
 
+1.0.0 BETA 5
+Release date: 2012 Mar 12
+
+
+COMMON
+
+- Changed program to require OpenNI 1.2.0.7 Unstable and NITE 1.3.1.6 Unstable,
+  to support the ASUS Xtion PRO out-of-the-box.
+- Added explanation of hand gestures for controlling the tetrominoes at the
+  beginning of a game.
+
+
+SOURCE
+
+- Added support for displaying a 3-sec countdown at the beginning of a game.
+- Various minor corrections and improvements.
+
+________________________________________________________________________________
+
+
 1.0.0 BETA 4
 Release date: 2011 Nov 07
 

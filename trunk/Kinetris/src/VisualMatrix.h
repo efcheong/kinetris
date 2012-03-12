@@ -37,6 +37,7 @@ public:
 	enum State
 	{
 		STATE_NONE = 0,
+		STATE_COUNTDOWN,
 		STATE_PLAY,
 		STATE_LOCK,
 		STATE_LINE_EXPLODE,
@@ -62,24 +63,27 @@ public:
 
 protected:
 
-	static const char IMAGE_FRAME_BG[];
-	static const char IMAGE_FRAME_MG[];
-	static const char IMAGE_FRAME_FG[];
-	static const char IMAGE_LINES_PROGRESS[];
-	static const char IMAGE_BLOCK[][32];
-	static const char IMAGE_BLOCK_OTHER[];
-	static const char IMAGE_BLOCK_GHOST[];
-	static const char IMAGE_OVER[];
-
-	static const char IMAGE_FAIL[];
+	static const char* IMAGE_FRAME_BG;
+	static const char* IMAGE_FRAME_MG;
+	static const char* IMAGE_FRAME_FG;
+	static const char* IMAGE_LINES_PROGRESS;
+	static const char* IMAGE_FAIL;
+	static const char* IMAGE_BLOCK[];
+	static const char* IMAGE_BLOCK_OTHER;
+	static const char* IMAGE_BLOCK_GHOST;
+	static const char* IMAGE_COUNT[];
+	static const char* IMAGE_OVER;
 
 	static const qreal BLOCK_LARGE;
 	static const qreal BLOCK_SMALL;
+
+	static const qreal COUNTDOWN_DURATION; // sec
 
 	static const qreal NEXTEFFECT_DURATION; // sec
 	static const qreal LOCKEFFECT_DURATION; // sec
 	static const qreal HOLDEFFECT_DURATION; // sec
 	static const qreal OVEREFFECT_DURATION; // sec
+	static const qreal HELPEFFECT_DURATION; // sec
 
 	static const qreal LINES_DELTA; // lines/sec
 	static const qreal SCORE_DELTA; // score/sec
@@ -102,16 +106,22 @@ protected:
 	QGraphicsRectItem* _sprite_lines;
 	QLabel* _sprite_level;
 	QLabel* _sprite_score;
+	QGraphicsWidget* _sprite_countdown;
+	QVector<QGraphicsItem*> _sprite_count;
 	QGraphicsWidget* _sprite_over;
-	QGraphicsRectItem* _sprite_overRect;
+	QGraphicsRectItem* _sprite_overFlash;
+	QGraphicsWidget* _sprite_help;
 
 	QGraphicsWidget* _avatar;
+
+	QTimeLine* _countdownTimer;
 
 	QVector<QTimeLine*> _nextEffectTimer;
 	QTimeLine* _landEffectTimer;
 	QTimeLine* _lockEffectTimer;
 	QTimeLine* _holdEffectTimer;
 	QTimeLine* _overEffectTimer;
+	QTimeLine* _helpEffectTimer;
 
 	qreal _linesSpinner;
 	qreal _scoreSpinner;
@@ -147,13 +157,18 @@ protected:
 	void collapse(QVector<bool> which);
 	void collapse(int start);
 
+	void updateCountdown(qreal dt);
+
 	void updateNextEffect(qreal dt);
 	void updateLandEffect(qreal dt);
 	void updateLockEffect(qreal dt);
 	void updateHoldEffect(qreal dt);
 	void updateOverEffect(qreal dt);
+	void updateHelpEffect(qreal dt);
+
 	void updateLines(qreal dt);
 	void updateScore(qreal dt);
+
 	void updateExplodeEffect(qreal dt);
 	void updateCrumbleEffect(qreal dt);
 
@@ -189,6 +204,8 @@ protected slots:
 	void onLevel(int count);
 	void onScore(int count);
 	void onTopOut();
+
+	void onFirstLock(Tetromino* tetromino);
 };
 
 #endif // KINETRIS_VISUALMATRIX_H

@@ -62,7 +62,7 @@ int Tetromino::getRotation() const
 void Tetromino::setRotation(int rotation)
 {
 	_rotation = rotation;
-	_shape = dynamic_cast<Matrix*>(parent())->getRules()->getRotationShape(_piece, _rotation);
+	_shape = static_cast<Matrix*>(parent())->getRules()->getRotationShape(_piece, _rotation);
 }
 
 QVector<Pair> Tetromino::getShape() const
@@ -85,7 +85,7 @@ int Tetromino::move(int direction)
 	if (_locked)
 		return 0;
 
-	Matrix* m = dynamic_cast<Matrix*>(parent());
+	Matrix* m = static_cast<Matrix*>(parent());
 
 	// Find maximum possible step distance
 	int dir = (direction < 0) ? -1 : 1;
@@ -132,7 +132,7 @@ int Tetromino::turn(int direction)
 	if (_locked)
 		return 0;
 
-	Matrix* m = dynamic_cast<Matrix*>(parent());
+	Matrix* m = static_cast<Matrix*>(parent());
 
 	// Find maximum possible rotations
 	int dir = (direction < 0) ? -1 : 1;
@@ -203,7 +203,7 @@ int Tetromino::fall(int magnitude)
 	if (_locked)
 		return 0;
 
-	Matrix* m = dynamic_cast<Matrix*>(parent());
+	Matrix* m = static_cast<Matrix*>(parent());
 
 	// Find maximum possible fall distance
 	int min = magnitude;
@@ -248,7 +248,7 @@ int Tetromino::drop()
 	if (_locked)
 		return 0;
 
-	Matrix* m = dynamic_cast<Matrix*>(parent());
+	Matrix* m = static_cast<Matrix*>(parent());
 
 	blockSignals(true);
 	int d = fall(m->getRows());
