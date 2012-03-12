@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BD317269-756B-4213-9E0F-8951ABC3A476}</ProjectGuid>
+    <RootNamespace>Kinetris</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bin\debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">qmake
+nmake debug</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">qmake
+nmake debug-clean debug</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nmake debug-clean</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)$(ProjectName).exe</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\SDK\Qt\4.7\include;C:\SDK\OpenNI\1.2\Include;C:\SDK\NITE\1.3\Include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">bin\release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">obj\release\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">qmake
+nmake release</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">qmake
+nmake release-clean release</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nmake release-clean</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)$(ProjectName).exe</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\SDK\Qt\4.7\include;C:\SDK\OpenNI\1.5\Include;C:\SDK\NITE\1.5\Include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\QuitScreen.h" />
+    <ClInclude Include="src\Background.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\HomeScreen.h" />
+    <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\Kinetris.h" />
+    <ClInclude Include="src\LoaderThread.h" />
+    <ClInclude Include="src\Matrix.h" />
+    <ClInclude Include="src\MenuScreen.h" />
+    <ClInclude Include="src\Pair.h" />
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\PlayScreen.h" />
+    <ClInclude Include="src\Ruleset.h" />
+    <ClInclude Include="src\SensorThread.h" />
+    <ClInclude Include="src\Tetromino.h" />
+    <ClInclude Include="src\VisualMatrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\appicon.icns" />
+    <None Include="res\appicon.ico" />
+    <None Include="res\appicon.png" />
+    <None Include="res\block-ghost.png" />
+    <None Include="res\block-i.png" />
+    <None Include="res\block-j.png" />
+    <None Include="res\block-l.png" />
+    <None Include="res\block-o.png" />
+    <None Include="res\block-other.png" />
+    <None Include="res\block-s.png" />
+    <None Include="res\block-t.png" />
+    <None Include="res\block-z.png" />
+    <None Include="res\count-1.png" />
+    <None Include="res\count-2.png" />
+    <None Include="res\count-3.png" />
+    <None Include="res\cover-bg.png" />
+    <None Include="res\cover-fg.png" />
+    <None Include="res\fail.png" />
+    <None Include="res\fence.png" />
+    <None Include="res\frame-bg.png" />
+    <None Include="res\frame-fg.png" />
+    <None Include="res\frame-mg.png" />
+    <None Include="res\lines-progress.png" />
+    <None Include="res\noise.png" />
+    <None Include="res\over.png" />
+    <None Include="res\title.png" />
+    <None Include="Kinetris.pro" />
+    <None Include="Kinetris.qrc" />
+    <None Include="OpenNI.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\QuitScreen.cpp" />
+    <ClCompile Include="src\Background.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\HomeScreen.cpp" />
+    <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\Kinetris.cpp" />
+    <ClCompile Include="src\LoaderThread.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Matrix.cpp" />
+    <ClCompile Include="src\MenuScreen.cpp" />
+    <ClCompile Include="src\Pair.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\PlayScreen.cpp" />
+    <ClCompile Include="src\Ruleset.cpp" />
+    <ClCompile Include="src\SensorThread.cpp" />
+    <ClCompile Include="src\Tetromino.cpp" />
+    <ClCompile Include="src\VisualMatrix.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Kinetris.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
